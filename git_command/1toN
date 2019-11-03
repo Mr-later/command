@@ -1,0 +1,10 @@
+ //add the relation to another repository for the local folder
+ git remote add githubtest https://github.com/xiaerjiao/testtt.git
+ 
+ //push the commits to the corresponding remote repository
+ git push githubtest 
+ 
+ //TODO
+ whether this method useful just for one/many commits or just changes (not a whole repository)
+ [new_branch:remote_branch_name]
+ mirror
