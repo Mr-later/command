@@ -1,0 +1,393 @@
+telnet原始版本有bug,
+改进版本经测试使用还行.
+telnet远程主机分为几种情况
+
+一.批量Telnet不同ip的指定端口
+由于机房搬迁,需要重新telnet看看网络是否联通
+[weblogic@pays03pre_BankVerify /]$ telnet 172.29.1.159 22
+Trying 172.29.1.159...
+Connected to 172.29.1.159.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_5.3
+1:首先准备hosts文件夹,里面保存所有你要telnet的地址,端口号都是22
+2:遍历hosts里面的全部ip,然后将telnet的结果保存在 telnet_result这个文件下面
+3:对文件进行二次过滤
+  a,看上面的打印结果,如果telnet通了,那么取"]"这个符号上面的一行,也就是Connected to 172.29.1.159.
+  b,再通过正则表达式取后面的ip,也就是 172.29.1.159.
+  c,再通过"."符号分割,取出1,2,3,4段,然后将通过的地址打印在 telnet_alive.txt这个文件里面,最后将不通的地址筛选出来放在telnet_die.txt里面
+脚本:
+#! /bin/bash
+for i in `cat hosts`
+do
+sleep 1|telnet $i 22 >> /luyantest/telnet_result.txt
+done
+cat /luyantest/telnet_result.txt| grep -B 1 \] | grep [0-9] | awk '{print $3}' | cut -d '.' -f 1,2,3,4 > /luyantest/telnet_alive.txt
+cat /luyantest/hosts /luyantest/telnet_alive.txt | sort | uniq -u > /luyantest/telnet_die.txt
+
+
+
+[root@pays03pre_BankVerify luyantest]# cat telnet_alive.txt
+172.29.1.159
+172.29.1.160
+172.29.2.111
+
+
+[root@pays03pre_BankVerify luyantest]# cat telnet_die.txt
+192.168.99.100
+
+
+[root@pays03pre_BankVerify luyantest]# cat telnet_result.txt
+Trying 172.29.1.159...
+Connected to 172.29.1.159.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_5.3
+Trying 172.29.1.160...
+Connected to 172.29.1.160.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_5.3
+Trying 172.29.2.111...
+Connected to 172.29.2.111.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_6.6.1
+Trying 192.168.99.100...
+
+
+
+--------------------------------------------------------------------------------
+
+
+二.批量Telnet不同ip的不同端口
+适用于在一台主机上Telnet诸多个主机,且是不同的端口.
+
+难点: 主要在于 Telnet 完之后如何退出
+在网上查了被人写的脚本.
+echo "(sleep 1;) | telnet $ip $port"
+        (sleep 1;) | telnet $ip $port >> result.txt
+可以实现Telnet之后自动退出的功能.
+
+成功ip的过滤:cut -d '.' -f 1,2,3,4
+由于telnet之后的ip结尾会多一个"."
+因此通过截取的方式过滤出ip.
+
+result.txt和 successIp 对比出result.txt有而successIp中没有的即为失败的ip
+cat result.txt successip.txt | sort | uniq -u |grep -v ^# > fail.txt
+
+这个脚本存在的问题, successip.txt中的$port将为ip与port列表中的最后一个成功的port,这个是脚本的问题,尚需解决.
+
+#!/bin/bash
+for line in `cat "telnet_list.txt" |grep -v ^# |grep -v ^$ `
+do
+        ip=`echo $line | awk 'BEGIN{FS="|"} {print $1}'`
+        port=`echo $line | awk 'BEGIN{FS="|"} {print $2}'`
+        echo "(sleep 1;) | telnet $ip $port"
+        (sleep 1;) | telnet $ip $port >> result.txt
+        successIp=`cat result.txt | grep -B 1 \] | grep [0-9] | awk '{print $3}' | cut -d '.' -f 1,2,3,4`
+        if [ -n "$successIp" ]; then
+                echo "$successIp|$port" > successip.txt
+        fi
+done
+cat result.txt successip.txt | sort | uniq -u |grep -v ^# > fail.txt
+
+
+telnet_list.txt中格式  ip|port
+
+
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+telnet改进版本
+1.一对多
+2多对一(源端多,找一台能免密登陆这些机器的主机,批量ssh)
+3.一对一(源端多,找一台能免密登陆这些机器的主机,批量ssh).
+[网上找了一版,是不包含refused的情况,这种情况是防火墙策略已经开通,但是应用未启动所以端口未被占用,自己改进加了判断条件]
+[有的主机将脚本中的中文字符就成了乱码,可以换成英文字符的]
+网上版本:
+
+
+
+详细内容如下:
+THREAD_NUM=30
+mkfifo tmp
+exec 9<>tmp
+rm -rf tmp
+#预先写入指定数量的换行符,一个换行符代表一个进程
+for ((i=0;i<$THREAD_NUM;i++))
+do
+    echo -ne "\n" 1>&9
+done
+if [ $# -gt 0 ];then
+		while read line
+		do
+		{
+			#进程控制
+			read -u 9
+			{
+				echo $line     #这里可根据实际用途变化
+				telstr=`(sleep 5;) | telnet $line`
+				#echo $telstr
+				if [[ $telstr =~ "^]" ]]
+				then
+					echo $line"连接正常！" >>passip.txt
+				else
+					echo $line"连接失败！" >>impassabilityip.txt
+				fi
+				echo -ne "\n" 1>&9
+			} &
+		}
+		done < $1
+		wait
+		echo "测试完成！"
+	else
+		echo "请输入ip文档名称！"
+fi
+
+
+一.一对多
+中文字符版:
+说明:
+位置变量$1 输入的是目标端的ip和端口,以空格分隔.
+附件:
+
+
+
+脚本内容如下:
+
+THREAD_NUM=30
+mkfifo tmp
+exec 9<>tmp
+rm -rf tmp
+#预先写入指定数量的换行符,一个换行符代表一个进程
+for ((i=0;i<$THREAD_NUM;i++))
+do
+    echo -ne "\n" 1>&9
+done
+if  $# -gt 0 ];then
+		while read line
+		do
+		{
+			#进程控制
+			read -u 9
+			{
+				echo $line     #这里可根据实际用途变化
+				telstr=`(sleep 2;) | telnet $line  2>&1`
+				#echo $telstr
+                              # echo "telstr:+++++++"
+			           # echo $telstr
+                              # echo  "---------"
+
+				if  $telstr =~ "^]" ]]
+				then
+					echo $line"连接正常！" >>passip.txt
+				elif  $telstr =~ "refuse" ]]
+				then
+				    echo $line"连接被拒绝！" >>refuse.txt
+				else
+					echo $line"连接失败！" >>impassabilityip.txt
+				fi
+				echo -ne "\n" 1>&9
+			} &
+		}
+		done < $1
+		wait
+		echo "测试完成！"
+	else
+		echo "请输入ip文档名称！"
+fi
+
+
+原有版本只有if和else
+改进版本具有了elif判断是否为端口未被占用,此时防火墙策略已开通,但是telnet ip port 时会显示连接被拒绝.(connection refused)
+
+
+英文字符版:
+附件如下:
+
+
+
+附件详细内容如下:
+
+THREAD_NUM=30
+mkfifo tmp
+exec 9<>tmp
+rm -rf tmp
+
+for ((i=0;i<$THREAD_NUM;i++))
+do
+    echo -ne "\n" 1>&9
+done
+if [ $# -gt 0 ];then
+		while read line
+		do
+		{
+
+			read -u 9
+			{
+				echo $line
+				telstr=`(sleep 2;) | telnet $line  2>&1`
+
+                   echo "telstr:+++++++"
+			       echo $telstr
+                   echo  "---------"
+
+				if [[ $telstr =~ "^]" ]]
+				then
+					echo $line"success!" >>passip.txt
+				elif [[ $telstr =~ "refuse" ]]
+				then
+				    echo $line"refused!" >>refuse.txt
+				else
+					echo $line"fail!" >>impassabilityip.txt
+				fi
+				echo -ne "\n" 1>&9
+			} &
+		}
+		done < $1
+		wait
+		echo "done"
+	else
+		echo "doc_name?"
+fi
+
+
+
+
+
+二.多对一版本(可改成一对一)
+多对一版本的用到了位置变量.
+使用说明:
+源端-->>文本文件tel.txt
+目标端ip 端口 -->>位置变量$1 $2
+执行脚本所在主机-->>能远程免密登陆的主机
+#!/bin/bash
+for  i in `cat tel.txt`
+do
+
+#echo "$i --> $1 $2 filewalld policy"
+echo "$i --> $1 $2 filewalld policy" >> telnet.log
+#ssh  hlwztprd@$i  "(sleep 0.5;) | telnet $1 $2  2>&1"
+ssh  hlwztprd@$i  "(sleep 0.5;) | telnet $1 $2  2>&1" >> telnet.log
+#echo ''
+echo '' >> telnet.log
+done
+
+
+结果:
+10.0.41.198 --> 10.0.41.144 5044 filewalld policy
+Trying 10.0.41.144...
+Connected to 10.0.41.144.
+Escape character is '^]'.
+Connection closed by foreign host.
+
+10.0.41.199 --> 10.0.41.144 5044 filewalld policy
+Trying 10.0.41.144...
+Connected to 10.0.41.144.
+Escape character is '^]'.
+Connection closed by foreign host.
+
+
+
+三.一对一.
+one_one:
+使用说明:
+源端 目标ip 目标端口--->>位置变量$1
+脚本:telnet.sh
+附件如下:
+
+
+
+cat telnet.sh
+THREAD_NUM=30
+mkfifo tmp
+exec 9<>tmp
+rm -rf tmp
+
+for ((i=0;i<$THREAD_NUM;i++))
+do
+    echo -ne "\n" 1>&9
+done
+if [ $# -gt 0 ];then
+		while read line
+		do
+		{
+
+			read -u 9
+			{
+				echo $line
+#telstr=`(sleep 2;) | telnet $line  2>&1`
+
+				sourceip=`echo "$line"  |  awk '{print $1}'`
+				destip=`echo "$line"  |  awk '{print $2}'`
+				destport=`echo "$line"  |  awk '{print $3}'`
+				#echo $sourceip
+				#echo $destip
+				#echo $destport
+telstr=`ssh  icsapp@$sourceip  "(sleep 0.5;) | telnet $destip $destport  2>&1" `
+				echo $telstr
+
+				if [[ $telstr =~ "^]" ]]
+				then
+					echo $line"ok!" >>passip.txt
+				elif [[ $telstr =~ "refuse" ]]
+				then
+				    echo $line"no!" >>refuse.txt
+				else
+					echo $line"fail" >>impassabilityip.txt
+				fi
+				echo -ne "\n" 1>&9
+			} &
+		}
+		done < $1
+		wait
+		echo "done!"
+	else
+		echo "doc_name?"
+fi
+
+
+
+位置变量$1文件中的内容格式如下:
+10.0.41.194   10.0.32.215 80
+10.0.41.194   10.0.32.219 80
+10.0.41.194   10.0.32.139 7001
+10.0.41.194   10.0.32.140 7001
+10.0.41.194   10.0.32.141 7001
+10.0.41.195   10.0.32.215 80
+10.0.41.195   10.0.32.219 80
+10.0.41.195   10.0.32.139 7001
+10.0.41.195   10.0.32.140 7001
+10.0.41.195   10.0.32.141 7001
+
+
+结果:
+cat  impassabilityip.txt  refuse.txt  passip.txt
+10.0.59.187 10.10.68.219   80     passip
+10.0.59.187 10.10.68.219   8080   refused
+10.0.59.187 10.0.60.47 8000      passip
+10.0.59.187 10.0.60.47 80        refused
+10.0.59.187 172.10.10.10 80      bu
+10.10.68.219 10.0.60.47 8000     passip
+10.10.68.219 10.0.60.47 80       refused
+
+
+
+
+总结:
+多对一
+ssh  hlwztprd@10.0.41.194  "(sleep 0.5;) | telnet 10.0.33.210 80  2>&1"
+一对多
+(sleep 0.5;) | telnet 10.0.33.210 80  2>&1
+
+
+一对多  与 多对一的情况均可以转换成为一对一的情况.
+不同情况使用不同的脚本
+被refused的ip  和 port 可以与passip.txt的合并到一起,都是防火墙策略通的情况
+
+
+思考 ??
+未改进版本中的bug是否可以改变以下语句解决,尚待验证:
+echo "$successIp|$port" > successip.txt
+改成echo $line >>successip.txt
+
