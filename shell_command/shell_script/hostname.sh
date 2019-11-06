@@ -1,5 +1,5 @@
 #execute this script in which has the  id_isa  of  other hosts.
-#hosts.txt  is  args .  ($1)
+#hosts.txt  is  args .  ($1 is the ip list which is splited by \n or \r\n)
 #execute: sh  hostname.sh  hosts.txt
 
 #!/bin/bash
