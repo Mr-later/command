@@ -14,12 +14,12 @@ if [ $# -gt 0 ];then
 
 			read -u 9
 			{
-				echo $line   
+#				echo $line
 				telstr=`(sleep 2;) | telnet $line  2>&1`
 		
-                   echo "telstr:+++++++"
+#                   echo "telstr:+++++++"
 			       echo $telstr
-                   echo  "---------"
+#                  echo  "---------"
 				  
 				if [[ $telstr =~ "^]" ]]
 				then
@@ -48,9 +48,9 @@ fi
 #				 10.133.212.214 8001
 #                10.133.212.214 8002
 #                10.133.212.214 8009
-#execute:  sh  telnet_1toN_eng.sh  iptext.txt
+#execute:  sh  telnet_1toN_3_eng.sh  iptext.txt
 #------
-#此脚本在原有基础上添加了elif判断，将防火墙已通但是目标端口未占用的划分出来
+#此脚本在原有基础上添加了elif判断，将防火墙已通但是目标端口未占用的划分出来;将结果分成了三种情况分析。
 #执行脚本的位置变量为iptext.txt，格式为： 远程ip 空格 远程端口。一个（远程ip 空格 远程端口）占用一行。
-#执行方式： sh  telnet_1toN_eng.sh  iptext.txt
+#执行方式： sh  telnet_1toN_3_eng.sh  iptext.txt
 
