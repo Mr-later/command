@@ -49,3 +49,8 @@ fi
 #                10.133.212.214 8002
 #                10.133.212.214 8009
 #execute:  sh  telnet_1toN_eng.sh  iptext.txt
+#------
+#此脚本在原有基础上添加了elif判断，将防火墙已通但是目标端口未占用的划分出来
+#执行脚本的位置变量为iptext.txt，格式为： 远程ip 空格 远程端口。一个（远程ip 空格 远程端口）占用一行。
+#执行方式： sh  telnet_1toN_eng.sh  iptext.txt
+
