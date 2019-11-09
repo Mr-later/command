@@ -1,0 +1,8 @@
+1：利用sed输出文本的奇数行和偶数行：
+sed  -rn '1~2p'  hostname.txt
+sed  -rn '2~2p'  hostname.txt
+
+同理：若是隔两行的数据是同一类别，即跳三行。
+sed  -rn '2~3p'  hostname.txt
+sed  -rn '3~3p'  hostname.txt
+
