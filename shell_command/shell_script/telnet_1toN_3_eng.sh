@@ -14,11 +14,11 @@ if [ $# -gt 0 ];then
 
 			read -u 9
 			{
-#				echo $line
+				echo $line
 				telstr=`(sleep 2;) | telnet $line  2>&1`
 		
 #                   echo "telstr:+++++++"
-			       echo $telstr
+#			       echo $telstr
 #                  echo  "---------"
 				  
 				if [[ $telstr =~ "^]" ]]
