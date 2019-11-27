@@ -4,13 +4,76 @@ aaaa
 bbbb
 cccc dddd
 
-$ cat file | while read line; do echo $line; done
-aaaa
-bbbb
-cccc dddd
 
+
+1.使用for循环则会将一行中有空格的也分行输出
 $ for line in $(<file); do echo $line; done
 aaaa
 bbbb
 cccc
 dddd
+
+
+
+2.read每一行会将一行一行的输出，保持原来的格式，比如
+$ cat file | while read line; do echo $line; done
+aaaa
+bbbb
+cccc dddd
+
+使用read读取有两种写法：
+2.1
+#!/bin/bash
+while read line
+do
+    echo $line
+done < file(待读取的文件)
+
+2.2
+#!/bin/bash
+cat file(待读取的文件) | while read line
+do
+    echo $line
+done
+
+
+
+3.实践（为什么会研究这个问题？进行防火墙统计时，使用到了源ip和目标ip以及端口的统计,使用到了笛卡尔积，写了脚本执行时出现了串行的问题）
+构想：将三者写到不同文件，使用三层for循环将结果按行输出到文件中。
+但是在使用for循环时，出现了串行的问题。
+使用read则不会有这样的问题。
+
+3.1 有问题的脚本
+两次循环：（使用for循环嵌套）
+#!/bin/bash
+for i in `cat weifuwu.txt`
+do
+cat  mq-redis-eureka-elk.txt |  while read line
+do
+echo $i  $line >>  wefuwu-mqi-redis-eureka-elk.txt
+done
+done
+
+#结果拼接结果有问题
+
+
+3.2改进脚本
+使用read
+三层循环：将源ip，目标ip和端口分开写到三个文件。
+#!/bin/bash
+for i in `cat weifuwu.txt`
+do
+#for j in `cat mq.txt `
+#do
+#echo $i  $j  >>  wefuwu-mq.txt
+#done
+cat  redis.txt |  while read line
+do
+cat port.txt |  while read port_redis
+do
+echo $i  $line  $port_redis  >>  wefuwu-redis.txt
+done
+done
+done
+
+#结果，得到想要的结果，拼接成了笛卡尔积的形式
