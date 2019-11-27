@@ -45,7 +45,7 @@ telstr=`ssh  icsapp@$sourceip  "(sleep 0.5;) | telnet $destip $destport  2>&1" `
 		echo "doc_name?"
 fi
 
-
+#attention：确认源ip主机有操作主机的公钥用户，本脚本中使用的icsapp用户，遇到不同情况需修改为不同的用户
 #执行位置：有源ip主机的私钥的主机上执行
 
 #执行参数：
