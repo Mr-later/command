@@ -1,3 +1,6 @@
+#脚本功能：添加ssh-copy-id.sh批量传输密钥到远程服务器
+
+
 #!/usr/bin/bash
 ###批量上传密钥
 password=hlwztprd
