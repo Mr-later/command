@@ -14,21 +14,21 @@ if [ $# -gt 0 ];then
 
 			read -u 9
 			{
-				echo $line
+#				echo $line
 				telstr=`(sleep 2;) | telnet $line  2>&1`
-		
+
 #                   echo "telstr:+++++++"
 #			       echo $telstr
-#                  echo  "---------"
-				  
+#                   echo  "---------"
+
 				if [[ $telstr =~ "^]" ]]
 				then
-					echo $line"success!" >>passip.txt
+					echo $line "success!" >>passip.txt
 				elif [[ $telstr =~ "refuse" ]]
-				then 
-				    echo $line"refused!" >>refuse.txt
+				then
+				    echo $line "refuse!" >>refuse.txt
 				else
-					echo $line"fail!" >>impassabilityip.txt
+					echo $line "fail!" >>impassabilityip.txt
 				fi
 				echo -ne "\n" 1>&9
 			} &

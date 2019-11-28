@@ -1,4 +1,4 @@
-THREAD_NUM=30
+THREAD_NUM=70
 mkfifo tmp
 exec 9<>tmp
 rm -rf tmp
@@ -14,7 +14,7 @@ if [ $# -gt 0 ];then
 
 			read -u 9
 			{
-				echo $line
+#				echo $line
 #telstr=`(sleep 2;) | telnet $line  2>&1`
 
 				sourceip=`echo "$line"  |  awk '{print $1}'`
@@ -23,17 +23,17 @@ if [ $# -gt 0 ];then
 				#echo $sourceip
 				#echo $destip
 				#echo $destport
-telstr=`ssh  icsapp@$sourceip  "(sleep 0.5;) | telnet $destip $destport  2>&1" `
-				echo $telstr
+telstr=`ssh  user@$sourceip  "(sleep 2;) | telnet $destip $destport  2>&1" `
+#				echo $telstr
 
 				if [[ $telstr =~ "^]" ]]
 				then
-					echo $line"ok!" >>passip.txt
+					echo $line "success!" >>passip.txt
 				elif [[ $telstr =~ "refuse" ]]
 				then
-				    echo $line"no!" >>refuse.txt
+				    echo $line "refuse!" >>refuse.txt
 				else
-					echo $line"fail" >>impassabilityip.txt
+					echo $line "fail!" >>impassabilityip.txt
 				fi
 				echo -ne "\n" 1>&9
 			} &
@@ -44,6 +44,8 @@ telstr=`ssh  icsapp@$sourceip  "(sleep 0.5;) | telnet $destip $destport  2>&1" `
 	else
 		echo "doc_name?"
 fi
+
+
 
 #attention：确认源ip主机有操作主机的公钥用户，本脚本中使用的icsapp用户，遇到不同情况需修改为不同的用户
 #执行位置：有源ip主机的私钥的主机上执行
@@ -64,7 +66,6 @@ fi
 #10.0.59.187 172.10.10.10 80fail
 #10.10.68.219 10.0.60.47 8000ok
 
-
-
-
-
+#脚本的注释：
+#THREAD_NUM=70 多线程的数量，本脚本中设置的70，若需要验证的数量超过了70，则剩下的会不进行验证。
+#（线程数这一点是在进行大量防火墙验证是发现的问题，当验证的数量超过设置的线程数量时，检查验证结果的行数，只有NUM+1个进行了验证，剩下的没有任何信息）
