@@ -11,7 +11,7 @@ ip=192.28.1.$i
 ping -c1 -W1 $ip &>/dev/null ####记录成功的ip
 if [ $? = 0 ];then
 echo "$ip">>ip.txt
-EOF 交互内容容易出错，请注意
+EOF 交互内容容易出错,请注意
   /usr/bin/expect <<-EOF
   set timeout 10
   spawn ssh-copy-id -i /home/jenkins/.ssh/id_rsa.pub -p 22 hlwztprd@$ip   ##上传的密钥写全路径#

@@ -6,3 +6,6 @@ sed  -rn '2~2p'  hostname.txt
 sed  -rn '2~3p'  hostname.txt
 sed  -rn '3~3p'  hostname.txt
 
+2.将指定字符串替换成指定字符串
+sed  -i   's/原字符串/新字符串/g'    123.txt
+#g是所有
