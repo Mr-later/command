@@ -80,4 +80,4 @@ with open(DOMAIN,'r') as f:
 三.将域名替换为IP
 直接利用sed命令,将找到的域名转换为对应的ip
 #cat sed.sh
-sed  -i   's/域名/ip/g'     123.tx
+sed  -i   's/域名/ip/g'     123.txt
