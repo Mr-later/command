@@ -1,0 +1,64 @@
+#输出数组个数
+echo ${#address[@]}
+
+
+#单个元素
+for i in ${address[@]}
+do
+    echo "${i}"
+done
+
+
+address[0]='aa'
+address[1]='bb'
+address[2]='cc'
+address[3]='dd'
+address[4]='ee'
+address[5]='ff'
+address[6]='gg'
+address[7]='hh'
+address[8]='ii'
+address[9]='jj'
+address[10]='kk'
+address[11]='ll'
+#输出数组
+echo ${address[@]}
+echo ${address[*]}
+echo ${address[@]*}
+echo ${address[@]#}
+
+#输出数组个数
+echo ${#address[@]}
+
+# 输出aa，默认address[0]
+#echo ${address}
+
+
+#单个元素
+for i in ${address[@]}
+do
+    echo "${i}"
+done
+
+
+
+[root@ceshi ~]# sh test.sh
+aa bb cc dd ee ff gg hh ii jj kk ll
+aa bb cc dd ee ff gg hh ii jj kk ll
+aa bb cc dd ee ff gg hh ii jj kk ll
+aa bb cc dd ee ff gg hh ii jj kk ll
+12
+aa
+bb
+cc
+dd
+ee
+ff
+gg
+hh
+ii
+jj
+kk
+ll
+
+
