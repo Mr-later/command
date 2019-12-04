@@ -1,0 +1,6 @@
+在远程服务器上执行本地的shell脚本
+ssh user@hostname -C "/bin/bash" < test.sh
+
+#在jenkins服务器上的version.sh脚本，将其在10.0.58.23上执行，输出日志在jenkins中与show.log
+ssh -T icsapp@10.0.58.23  < version.sh >> show.log
+
