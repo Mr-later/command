@@ -1,0 +1,5 @@
+清理redis缓存，若是集群，在主节点进行clean，从节点会报错，从节点是只读的。
+第一种(常规):
+>/redis/redis-cli -h ${i} -p 6379 eval "local keys = redis.call('keys', ARGV[1])  for i=1,#keys,5000 do  redis.call('del', unpack(keys, i, math.min(i+4999, #keys)))  end  return keys" 0  *123456*
+第二种(全清)：
+>flushall async

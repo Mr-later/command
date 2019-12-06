@@ -18,3 +18,13 @@ echo $hostip
 echo ''
 在A主机中执行如下命令执行：
 ssh -T user@ipB  < serverip.sh >> show.log
+
+应用二：
+问题描述：
+A主机远程B主机时的source问题
+A服务器再source一个脚本，使其在B服务器执行；
+而这个脚本中也有一个source命令，是source 一个配置文件；
+看结果表明，B主机中的配置文件中已经添加了ip，但是echo $serverip 时没有结果。
+在B机器上输入echo $serverip 没有ip，但是~/.bash_profile中有ip。
+解决方式：
+B机器的终端重新打开一次试一下
