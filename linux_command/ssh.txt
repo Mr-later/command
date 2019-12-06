@@ -6,7 +6,8 @@ ssh user@ip -C "/bin/bash" < test.sh
 ssh -T user@ip  < version.sh >> show.log
 
 应用一:
-批量获取远程主机的 ~/.bash_profile  的最后一行
+批量获取远程主机的 ~/.bash_profile  的最后一行：
+
 在搭建filebeat时，需要在~/.bash_profile中添加入serverip=本机ip。
 由于网卡的名称不一致，过滤ip时写的获取方式有时获取不到正确的ip地址。
 批量添加之后，如何验证是否全部添加成功？
@@ -15,5 +16,5 @@ ssh -T user@ip  < version.sh >> show.log
 hostip=`tail -1  ~/.bash_profile`
 echo $hostip
 echo ''
-
-ssh -T user@ip  < serverip.sh >> show.log
+在A主机中执行如下命令执行：
+ssh -T user@ipB  < serverip.sh >> show.log
