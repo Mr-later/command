@@ -2,9 +2,13 @@
 sed  -rn '1~2p'  hostname.txt
 sed  -rn '2~2p'  hostname.txt
 
-同理：若是隔两行的数据是同一类别，即跳三行。
+1.1 同理：若是隔两行的数据是同一类别，即跳三行。
 sed  -rn '2~3p'  hostname.txt
 sed  -rn '3~3p'  hostname.txt
+
+1.2 输出第二行第三行 以及第二第三行加上同样的行
+sed  -rn '2~5p；3~5p'  hostname.txt
+
 
 2.将指定字符串替换成指定字符串
 sed  -i   's/原字符串/新字符串/g'    123.txt
