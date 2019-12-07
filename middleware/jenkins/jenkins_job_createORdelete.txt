@@ -1,4 +1,4 @@
-jenkins-api
+jenkins-api创建和删除job.
 
 一：创建job
 curl -XPOST -u admin:admintest http://[IP]:[PORT]/createItem?name=${i} --data-binary "@/app/jenkins/jobs/[job_name]/config.xml" -H "Content-Type: text/xml"
@@ -22,8 +22,6 @@ curl -XPOST -u admin:15245772130 http://[IP]:[PORT]/job/[job_name]/doDelete
 （3）jenkins界面中读取设置 。
 方法三：
 使用jenkins创建job的api使用。
-
-
 
 
 
