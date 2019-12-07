@@ -1,0 +1,40 @@
+修改内核参数：
+Ulimit命令
+1.命令参数
+-a      显示所有限制
+-c      core文件大小的上限
+-d      进程数据段大小的上限
+-f      shell所能创建的文件大小的上限
+-m     驻留内存大小的上限
+-s      堆栈大小的上限
+-t      每秒可占用的CPU时间上限
+-p     管道大小
+-n     打开文件数的上限
+-u     进程数的上限
+-v     虚拟内存的上限
+
+2.生效期限
+为了获得最佳性能，让运行 JVM 进程的用户拥有经过正确配置的用户设置是很重要的。这些参数可以设置成以下两种形式之一：
+暂时地，适用于通过 ulimit 命令登录 shell 会话期间。
+永久地，通过将一个相应的 ulimit 语句添加到由登录 shell 读取的文件之一（例如 ~/.profile），即特定于 shell 的用户资源文件；或者
+
+3.设置为无限制
+通过编辑 /etc/security/limits.conf。
+建议设置成 无限制（unlimited）的一些重要设置是：
+数据段长度：ulimit –d unlimited
+最大内存大小：ulimit –m unlimited
+堆栈大小：ulimit –s unlimited
+CPU 时间：ulimit –t unlimited
+虚拟内存：ulimit –v unlimited
+提高 Oracle 用户的 shell 限制
+
+
+4.常用的参数
+线程数--nproc
+打开文件数量--nofile
+格式：[用户] [硬限制/软限制]  [限制类型]  [设定值]
+/etc/security/limits.conf
+oracle soft nproc 2047
+oracle hard nproc 16384
+oracle soft nofile 1024
+oracle hard nofile 65536
