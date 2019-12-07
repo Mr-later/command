@@ -1,0 +1,45 @@
+filebeat相关registry文件内容解析
+
+filebeat的registry文件中存放的是被采集的所有日志的相关信息。
+linux中registry中一条日志记录的内容如下
+	{"source":"/var/log/messages","offset":5912,"FileStateOS":{"inode":38382035,"device":64768},"timestamp":"2017-03-13T18:17:54.39159179+08:00","ttl":-1}
+　
+这条记录中的各个字段的意义分别为:
+	source 日志文件完整路径
+	offset　已经采集的日志的字节数;已经采集到日志的哪个字节位置
+	filestateos　　操作系统相关
+	inode　　日志文件的inode号
+	device    日志所在磁盘的磁盘编号
+	timestamp　　日志最后一次发生变化的时间戳
+	ttl　　采集失效时间。-1表示只要日志存在，就一直采集该日志
+　　
+device一列的数字64768有些难理解。这个数字可以通过stat命令得到:
+	stat /var/log/messages
+	File: "/var/log/messages"
+	Size: 3964            Blocks: 8          IO Block: 4096   普通文件
+	Device: fd00h/64768d    Inode: 2228688     Links: 1
+	Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)
+	Access: 2017-12-17 03:20:01.177559387 +0800
+	Modify: 2017-12-22 11:01:19.401186654 +0800
+	Change: 2017-12-22 11:01:19.401186654 +0800
+
+64768为十进制数，对应十六进制数fd00，对应磁盘为fd,00即253, 0
+	# ll /dev/dm-0
+	brw-rw----. 1 root disk 253, 0 8月  17 19:30 /dev/dm-0
+	# ll /dev/root
+	lrwxrwxrwx. 1 root root 4 8月  17 19:30 /dev/root -> dm-0
+	# ll /dev/VolGroup/
+	总用量 0
+	lrwxrwxrwx. 1 root root 7 11月 17 10:37 lv_home -> ../dm-2
+	lrwxrwxrwx. 1 root root 7 8月  17 19:30 lv_root -> ../dm-0
+	lrwxrwxrwx. 1 root root 7 8月  17 19:30 lv_swap -> ../dm-1
+
+windows中registry内容如下
+	[{"source":"D:\\zwl\\filebeat\\error.log","offset":92937960,"FileStateOS":{"idxhi":131072,"idxlo":40032,"vol":4070684760},"timestamp":"2017-08-22T11:26:52.887343+08:00","ttl":-1}
+
+source 日志文件完整路径
+	offset　已经采集的日志的字节数;已经采集到日志的哪个字节位置
+	filestateos　　操作系统相关
+	idxhi/idxlo/vol    On windows the pair of (volume, idxhi, idxlo) uniquely identifies a file.
+	timestamp　　日志最后一次发生变化的时间戳
+	ttl　　采集失效时间。-1表示只要日志存在，就一直采集该日志
