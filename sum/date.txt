@@ -1,0 +1,46 @@
+1.date
+这个是最经典的系统查看时间的命令，也是脚本的经常用到定义时间的命
+
+[root@localhost ~]$ date
+Fri Jan 25 14:17:17 CST 2019
+2.uptime
+[root@localhost ~]# uptime
+16:51:24 up 13:02, 1 user, load average: 0.00, 0.01, 0.05
+这个命令第一个数据 就是系统当前时间，第二个是系统的运行时间，第三个是系统的登录用户数 之后的那三个是过去 1分钟 5分钟 15分钟的系统负载的均值
+
+3.w
+[modps@gd-mopps02 ~]$ w
+17:19:01 up 1983 days, 13:05, 2 users, load average: 26.45, 27.76, 27.72
+USER TTY FROM LOGIN@ IDLE JCPU PCPU WHAT
+gdmm81 pts/0 10.153.97.38 14:09 23.00s 0.36s 0.01s sshd: gdmm81 [priv]
+dwtangmi pts/3 10.153.97.56 17:18 0.00s 0.07s 0.01s sshd: dwtangmingqi [priv]
+w命令注意是查看系统当前登录的用户，每个用户当前所做的事情，所有活动的负载对计算机的影响，这个命令结合了uptime 、who 和ps -a 的结果
+当然这个命令还有其他选项的。有时间可以研究一下使用的方法
+
+w命令第一列，就跟uptime是一样的。
+w命令的第二列，就是系统当前的登录用户，
+User：登录用户名
+TTY：登录后系统分配的终端号
+From：远程主机名，即从哪登录的
+login@：何时登录
+IDLE：用户空闲时间。这是个计时器，一旦用户执行任何操作，改计时器就会被重置。
+JCPU：和终端连接的所有进程占用时间。包括当前正在运行的后台作业占用时间
+PCPU：当前进程所占用时间
+WHAT：当前正在运行进程的命令行
+
+4.top
+top命令是实时监控系统的进程的基础命令之一，top命令是3秒钟进行一个周期的进行监控的
+
+top命令有也是有选项的
+
+5.who
+[modps@gd-mopps02 ~]$ who
+gdmm81 pts/0 2019-01-18 14:09 (10.153.97.38)
+dwtangmingqi pts/3 2019-01-18 17:18 (10.153.97.56)
+who命令是跟w命令有点类似的，我命令包含的信息会更多点
+
+6.last
+last是列出最近登录过系统的用户
+
+[root@localhost ~]# last root -F |head -1 |awk '{print $4,$5,$6,$7,$8}'
+Fri Jan 18 14:55:52 2019有时间要研究一下 -F 是什么用途

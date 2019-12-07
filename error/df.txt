@@ -1,0 +1,5 @@
+[hlwztprd@pyhxprdvapp8 ~]$ df -h
+df: `/root/.gvfs': Permission denied
+
+二。文件系统变成只读的
+重启就好了
