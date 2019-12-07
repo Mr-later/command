@@ -1,0 +1,36 @@
+Linux--find命令
+和 xargs命令组合
+和exec 结合
+
+一。find 查找文件的命令，并可以做出相应的处理
+命令格式：
+find filename 【选项】【-print -exec -ok ...】
+选项参数：
+1、-name :按照文件名称查找，可以提前cd定位，也可以在find命令最前面加上待查找路径
+注意需要写上文件类型
+2、-type：按类型查找文件
+d: 目录文件 　　 b:块设备文件　　c:字符设备文件　　f:普通文件
+3、-mtime -n +m：　　按照文件的更改时间来查找文件， - n表示文件更改时间距现在n天以内，+ n表示文件更改时间距现在n天以前
+
+
+
+命令实操：
+1.find 【路径】（可省）  -name   "*.ini"（或者可以指定任意准确的文件名称）
+2、find 【路径】（可省） 　-type　f/d　-name  "*.ini"
+
+
+
+二。find 与 xargs 的组合：
+什么是xargs：x 是加减乘除的乘号，args 则是 arguments (参数) 的意思，所以说，就是在产生某个指令的参数的意思；
+会使用 xargs 的原因是， 很多指令其实并不支持管线命令，因此我们可以透过 xargs 来提供该指令引用 standard input 之用。
+
+实例：
+1、搜索具体文件：在当前目录下，所有普通文件中搜索“hh”这个词
+find ./  -type f | xargs grep "hh"
+
+
+
+2、与删除连用：①在当前目录下，删除1天以内的所有东西
+find ./ -mtime -1 | xargs rm -rf
+②在当前目录下，删除文件大小为0的文件
+find ./ -size 0 | xargs rm -rf
