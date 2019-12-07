@@ -71,3 +71,5 @@ sentinel down-after-milliseconds agency-redis 5000
 	./redis-cli -p 26379 shuwdown
 2.查看信息
 	./redis-cli -p 6379 info
+3.查看主从信息
+    >info replication
