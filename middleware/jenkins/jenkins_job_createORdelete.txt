@@ -26,15 +26,14 @@ curl -XPOST -u admin:15245772130 http://[IP]:[PORT]/job/[job_name]/doDelete
 
 
 注意：
-1.jenkins默认开启CSRF。
+1.jenkins默认开启CSRF(防止跨站点请求)。
 方式一：在安全设置中直接关闭此功能
 方式二：获取crumb信息
 curl -u root:liumiaocn 'http://localhost:32002/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)
 
 注意从不同主机执行此命令获取到的crumb结果不同，使用crumb创建job：
 
-curl -X POST -u 目标jenkins的用户名:目标jenkins密码 -H "Content-Type:text/xml"    -H "Jenkins-Crumb:5955de6dcdcdb990b7341ead1045eb64"
---data-binary "@var/lib/jenkins/jobs/参考job名称/config.xml" http://目标jenkins的IP:目标jenkins的端口/createItem?name=新job名称
+curl -X POST -u 目标jenkins的用户名:目标jenkins密码 -H "Content-Type:text/xml"    -H "Jenkins-Crumb:5955de6dcdcdb990b7341ead1045eb64"   --data-binary "@var/lib/jenkins/jobs/参考job名称/config.xml" http://目标jenkins的IP:目标jenkins的端口/createItem?name=新job名称
 
 
 关于curl：
