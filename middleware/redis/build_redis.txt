@@ -1,13 +1,27 @@
 redis的搭建说明
+一.tar包解压及make编译
+二为配置文件及启动命令
+三为停服务
 
+一.tar包解压及make编译
+下载编译源码
+	例如redis-4.0.2.tar.gz
+		tar xzf redis-4.0.2.tar.gz
+		cd redis-4.0.2
+		make
+	复制运行文件
+	cp ./src/redis-cli /redis/
+	cp ./src/redis-server /redis/
+	cp ./src/redis-benchmark /redis/
+	cp redis.conf /redis/
 
-一.redis集群安装
+二.redis集群安装
 tar包解压
 cd 到解压后的文件夹，源码编译make
 redis make时 出现 cc 命令未找到,需要安装c++ yum install gcc
 
 
-二.redis的配置和启动
+三.redis的配置和启动
 启动顺序：
 先哨兵sentinel再启动redis
 
@@ -59,11 +73,12 @@ sentinel monitor agency-redis 10.0.40.110 6379 1
 maxclients 4064
 sentinel down-after-milliseconds agency-redis 5000
 
-#说明： 集群名称 主节点ip 主节点port
+
+#说明sentinel.conf的内容： 集群名称 主节点ip 主节点port
 #sentinel monitor agency-redis 10.0.40.110 6379 1
 
 
-三.redis的使用
+四.redis的使用
 1.停止redis服务
     ./redis-cli shutdown
 停止命令
