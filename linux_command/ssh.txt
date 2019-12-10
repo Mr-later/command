@@ -1,11 +1,14 @@
-在远程服务器上执行本地的shell脚本
+一.命令
+1.1 在远程服务器上执行本地的shell脚本
 ssh user@ip -C "/bin/bash" < test.sh
 
-#A远程连接多个主机B1 B2 ,将在远程主机终端显示的信息输出在A主机中的log文件中
+1.2 A远程连接多个主机B1 B2 ,将在远程主机终端显示的信息输出在A主机中的log文件中
 #在jenkins服务器上的version.sh脚本，将其在10.0.58.23上执行，输出日志在jenkins中与show.log
 ssh -T user@ip  < version.sh >> show.log
 
-应用一:
+
+二.应用
+2.1 应用一:
 批量获取远程主机的 ~/.bash_profile  的最后一行：
 
 在搭建filebeat时，需要在~/.bash_profile中添加入serverip=本机ip。
@@ -19,7 +22,7 @@ echo ''
 在A主机中执行如下命令执行：
 ssh -T user@ipB  < serverip.sh >> show.log
 
-应用二：
+2.2 应用二：
 问题描述：
 A主机远程B主机时的source问题
 A服务器再source一个脚本，使其在B服务器执行；
