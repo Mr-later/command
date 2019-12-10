@@ -35,7 +35,7 @@ function lookupSingleIp(){
     else
         domain=`nslookup $ip  | egrep 'Address:' |  awk '{if(NR==2) print $NF}'` #查询IP地址
     fi
-    echo  "$ip	$domain"   #如果想把输出结果输出到文件中，可追加重定向到文件中。
+    echo  "$ip	$domain"   #如果想把输出结果输出到文件中，可追加重定向到文件中.
   done
 }
 

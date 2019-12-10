@@ -14,12 +14,12 @@ Ulimit命令
 -v     虚拟内存的上限
 
 2.生效期限
-为了获得最佳性能，让运行 JVM 进程的用户拥有经过正确配置的用户设置是很重要的。这些参数可以设置成以下两种形式之一：
-暂时地，适用于通过 ulimit 命令登录 shell 会话期间。
+为了获得最佳性能，让运行 JVM 进程的用户拥有经过正确配置的用户设置是很重要的.这些参数可以设置成以下两种形式之一：
+暂时地，适用于通过 ulimit 命令登录 shell 会话期间.
 永久地，通过将一个相应的 ulimit 语句添加到由登录 shell 读取的文件之一（例如 ~/.profile），即特定于 shell 的用户资源文件；或者
 
 3.设置为无限制
-通过编辑 /etc/security/limits.conf。
+通过编辑 /etc/security/limits.conf.
 建议设置成 无限制（unlimited）的一些重要设置是：
 数据段长度：ulimit –d unlimited
 最大内存大小：ulimit –m unlimited

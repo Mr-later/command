@@ -11,10 +11,10 @@ ssh -T user@ip  < version.sh >> show.log
 2.1 应用一:
 批量获取远程主机的 ~/.bash_profile  的最后一行：
 
-在搭建filebeat时，需要在~/.bash_profile中添加入serverip=本机ip。
-由于网卡的名称不一致，过滤ip时写的获取方式有时获取不到正确的ip地址。
+在搭建filebeat时，需要在~/.bash_profile中添加入serverip=本机ip.
+由于网卡的名称不一致，过滤ip时写的获取方式有时获取不到正确的ip地址.
 批量添加之后，如何验证是否全部添加成功？
-在jenkins主机写获取 ~/.bash_profile  的最后一行的脚本，再批量在远程主机上执行即可。
+在jenkins主机写获取 ~/.bash_profile  的最后一行的脚本，再批量在远程主机上执行即可.
 #!/bin/bash
 hostip=`tail -1  ~/.bash_profile`
 echo $hostip
@@ -27,7 +27,7 @@ ssh -T user@ipB  < serverip.sh >> show.log
 A主机远程B主机时的source问题
 A服务器再source一个脚本，使其在B服务器执行；
 而这个脚本中也有一个source命令，是source 一个配置文件；
-看结果表明，B主机中的配置文件中已经添加了ip，但是echo $serverip 时没有结果。
-在B机器上输入echo $serverip 没有ip，但是~/.bash_profile中有ip。
+看结果表明，B主机中的配置文件中已经添加了ip，但是echo $serverip 时没有结果.
+在B机器上输入echo $serverip 没有ip，但是~/.bash_profile中有ip.
 解决方式：
 B机器的终端重新打开一次试一下
