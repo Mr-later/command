@@ -29,7 +29,7 @@ echo -e "\t${IPAddress}\t${mem_all}\t${mem_pused}\t${cpu}\t${tcpConnection}\t${r
 ssh -T icsapp@${i}  < systeminfo.sh >>show.log
 
 
-当主机多的时候,可以多谢几行,也可以将ip列表写入到文本文件中,然后写脚本从host.txt文件中读取ip
+当主机多的时候,可以多写几行,也可以将ip列表写入到文本文件中,然后写脚本从host.txt文件中读取ip
 比如:以下脚本
 
 #主机列表写于host.txt

@@ -24,7 +24,6 @@ www.powerdns.com	188.166.104.92
 5.脚本内容
 [root@node2 data]# cat jiexi.sh
 #!/bin/bash
-
 function lookupSingleIp(){
   for ip in $@;
   do

@@ -1,5 +1,5 @@
 一.使用api创建jenkins的job
-二.使用ap创建jenkins的删除job
+二.使用api删除jenkins的job
 
 job.txt是另一个源jenkins中的需要迁移的job名称
 本例演示的源和目标job的名称一样,未发生改变
