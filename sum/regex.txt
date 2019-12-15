@@ -44,9 +44,21 @@ http://10.0.32.215/aipforcip/ws/serviceproxyAIP?wsdl
 思考：
 是不是因为ip后面的内容没匹配上，所有没能替换
 
-4.5：过滤出一行中有两个ip的情况的ip，并且还在同一行，以逗号分隔开(对于http://ip/)
+4.5：(对于http://ip/...的形式适用)过滤出一行中有两个ip的情况的ip，并且还在同一行，以逗号分隔开
 sed -r 's/http:\/\/(([0-9]+\.){3}[0-9]+(:[0-9]{1,})?)\/{1}([a-zA-Z|\?|\/|_]+)/\1/g'  test.txt
 例如：过滤出http://10.0.32.215/aipforcip/ws/serviceproxyAIP?wsdl,http://10.0.33.210/lis_web_ind/newContServlet的ip
+结果：10.0.32.215,10.0.33.210
+
+同理：
+failover:(tcp://10.0.40.195:61616,tcp://10.0.40.195:61617,tcp://10.0.40.196:61616)?randomize
+sed -r 's%(failover:\()?tcp://%%g'  test.txt  | sed -r  's%\)\?randomize%%g'
+
+同理：
+jdbc:oracle:thin:@10.0.36.147:1521/netdbtaf
+sed -r 's%/(icprdadg|netdbtaf)%%g'  test.txt | sed -r 's%jdbc:oracle:thin:@%%g'
+
+tips:
+犯了一个错误,是这样的，将sed -ri 完了之后通过管道给下一个sed，然后就报错了。
 
 
 
