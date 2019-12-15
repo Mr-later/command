@@ -4,7 +4,7 @@
 直接使用本条命令即可,会将所有表空间名称，文件名称，ansible打印出来：
 select tablespace_name,file_name,autoextensible from dba_data_files where autoextensible='YES';
 说明：
-其中autoextensible: YES/NO 即表示是否自增。
+其中autoextensible: YES/NO 即表示是否自增.
 
 
 

@@ -1,6 +1,6 @@
 filebeat相关registry文件内容解析
 
-filebeat的registry文件中存放的是被采集的所有日志的相关信息。
+filebeat的registry文件中存放的是被采集的所有日志的相关信息.
 linux中registry中一条日志记录的内容如下
 	{"source":"/var/log/messages","offset":5912,"FileStateOS":{"inode":38382035,"device":64768},"timestamp":"2017-03-13T18:17:54.39159179+08:00","ttl":-1}
 　
@@ -11,9 +11,9 @@ linux中registry中一条日志记录的内容如下
 	inode　　日志文件的inode号
 	device    日志所在磁盘的磁盘编号
 	timestamp　　日志最后一次发生变化的时间戳
-	ttl　　采集失效时间。-1表示只要日志存在，就一直采集该日志
+	ttl　　采集失效时间.-1表示只要日志存在，就一直采集该日志
 　　
-device一列的数字64768有些难理解。这个数字可以通过stat命令得到:
+device一列的数字64768有些难理解.这个数字可以通过stat命令得到:
 	stat /var/log/messages
 	File: "/var/log/messages"
 	Size: 3964            Blocks: 8          IO Block: 4096   普通文件
@@ -42,4 +42,4 @@ source 日志文件完整路径
 	filestateos　　操作系统相关
 	idxhi/idxlo/vol    On windows the pair of (volume, idxhi, idxlo) uniquely identifies a file.
 	timestamp　　日志最后一次发生变化的时间戳
-	ttl　　采集失效时间。-1表示只要日志存在，就一直采集该日志
+	ttl　　采集失效时间.-1表示只要日志存在，就一直采集该日志
