@@ -1,7 +1,7 @@
 查看表空间文件是否为自动增长
 
 1.表空间是有数据文件组成的，所以看表空间是否自增即看数据文件，如下查自增的表空间：
-直接使用本条命令即可,会将所有表空间名称，文件名称，ansible打印出来：
+直接使用本条命令即可,会将所有表空间名称，文件名称，autoextensible打印出来：
 select tablespace_name,file_name,autoextensible from dba_data_files where autoextensible='YES';
 说明：
 其中autoextensible: YES/NO 即表示是否自增.
