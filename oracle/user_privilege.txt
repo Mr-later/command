@@ -1,4 +1,4 @@
-查看用户权限问题
+查看oracle用户权限问题
 1.查看所有用户：
   select * from dba_users;
   select * from all_users;
