@@ -2,7 +2,6 @@
 
 4. Ansible安装
 4.1 下载离线安装包
-
 本人安装的版本为2.4.2.0，若不想安装此版本的童鞋自行下载其他版本安装包！
 下载地址：ansible安装包及依赖下载！！！
 4.2上传至服务器
@@ -15,13 +14,9 @@ cd ansible-2.4-rpms.el7
 4.5安装ansible依赖内容
 rpm -ivh PyYAML*rpm libyaml*rpm python-babel*rpm python-backports*rpm python-backports-ssl_match_hostname*rpm python-cffi*rpm python-enum34*rpm python-httplib2*rpm python-idna*rpm python-ipaddress*rpm python-jinja2*rpm python-markupsafe*rpm python-paramiko*rpm python-passlib*rpm python-ply*rpm python-pycparser*rpm python-setuptools*rpm python-six*rpm python2-cryptography*rpm python2-jmespath*rpm python2-pyasn1*rpm sshpass*rpm --nodeps --force
 4.6.安装ansible
-
 rpm -ivh ansible-2.4.2.0-2.el7.noarch.rpm
-
 5.测试是否安装成功
-
 ansible --version
 
-    1
 
 
