@@ -28,13 +28,10 @@ yml         > properties
 ？6.所以，不管是jar包内还是jar运行的同级目录下，只要包含bootstrap.yml ，且为云配置，则云配置文件会覆盖其他配置文件；
 
 实验：
-1.application.yml和bootstrap.yml同级目录
-  application.yml生效
-2.application.yml和bootstrap.properties同级目录
-  application.yml生效
-3.application.yml和application.properties
-  application.yml生效
-
+生效：
+    application.properties   > application.yml  > bootstrap.properties  >  bootstrap.yml
+也就是说加载顺序：
+    application.properties   < application.yml  < bootstrap.properties  <  bootstrap.yml
 
 
 
