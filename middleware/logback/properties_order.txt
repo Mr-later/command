@@ -1,0 +1,6 @@
+ 1.application.properties 优先级高于 bootstrap.properties
+    application.properties:
+        hello=application
+    bootstrap.properties:
+        hello=bootstrap
+ 测试结果：真正起作用的是 application.properties 中配置的值。
