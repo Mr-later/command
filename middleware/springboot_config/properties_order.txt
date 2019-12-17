@@ -30,9 +30,10 @@ yml         > properties
 实验：
 1.application.yml和bootstrap.yml同级目录
   application.yml生效
-
-
-
+2.application.yml和bootstrap.properties同级目录
+  application.yml生效
+3.application.yml和application.properties
+  application.yml生效
 
 
 
