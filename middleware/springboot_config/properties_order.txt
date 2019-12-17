@@ -27,16 +27,19 @@ yml         > properties
 
 ？6.所以，不管是jar包内还是jar运行的同级目录下，只要包含bootstrap.yml ，且为云配置，则云配置文件会覆盖其他配置文件；
 
-实验：
+########################################################################
+实验结果：
 生效：
     application.properties   > application.yml  > bootstrap.properties  >  bootstrap.yml
 也就是说加载顺序：
     application.properties   < application.yml  < bootstrap.properties  <  bootstrap.yml
+########################################################################
 
 7.目前中台使用的都是application.properties,没有使用bootstrap，所有的外部指定yml配置文件会覆盖内部的application.properties属性
 
 bootstrap使用的一般为比较高级的功能
 目前使用到的地方就是配置中心，在bootstrap.yml配置了配置中心的地址
+
 
 
 
