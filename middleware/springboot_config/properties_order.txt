@@ -1,0 +1,43 @@
+加载顺序与最终生效是相反的。
+bootstrap   >  application
+yml         > properties
+
+ 1.application.properties 优先级高于 bootstrap.properties  （最终生效的优先级）
+    application.properties:
+        hello=application
+    bootstrap.properties:
+        hello=bootstrap
+ 测试结果：真正起作用的是 application.properties 中配置的值。
+
+ 2.加载顺序上的区别
+ bootstrap.yml（bootstrap.properties）先加载
+ application.yml（application.properties）后加载
+
+ 最终起作用的是后加载的
+
+ 3.使用 Spring Cloud Config 配置中心时，这时需要在 bootstrap 配置文件中添加连接到配置中心的配置属性来加载外部配置中心的配置信息；一些固定的不能被覆盖的属性
+   bootstrap 里面的属性会优先加载，它们默认也不能被本地相同配置覆盖。
+
+ 4.若application.yml 和bootStrap.yml 在同一目录下，则bootStrap.yml 的加载顺序要高于application.yml,即bootStrap.yml  会优先被加载。
+                •bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
+                •application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。
+
+5.不同位置的配置文件的加载顺序：
+       在不指定要被加载文件时，默认的加载顺序：由里向外加载，所以最外层的最后被加载，会覆盖里层的属性
+
+？6.所以，不管是jar包内还是jar运行的同级目录下，只要包含bootstrap.yml ，且为云配置，则云配置文件会覆盖其他配置文件；
+
+实验：
+1.application.yml和bootstrap.yml同级目录
+  application.yml生效
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,4 @@
 logback.xml 加载早于 application.properties，所以如果你在 logback.xml 使用了变量时，而恰好这个变量是写在 application.properties 时，那么就会获取不到，
 只要改成 logback-spring.xml 就可以解决，因为 logback-spring.xml 是在 application.properties 之后加载的。
 即加载顺序：由高到低： logback.xml >  application.properties  >  logback-spring.xml
+加载晚的会读取到前面的key的值
