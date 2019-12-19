@@ -1,0 +1,19 @@
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /app/hlwztprd/filebeat/log/*.log
+  ignore_older: 70h 
+  close_inactive: 1m
+  close_removed: true
+  clean_inactive: 72h
+  clean_removed: true
+  close_timeout: 3h
+filebeat.spool_size: 256
+fields_under_root: true
+fields:
+  host: 10.0.40.189
+loadbalance: true
+output.logstash:
+  hosts: ["10.0.41.21:5044","10.0.40.187:5044","10.0.40.188:5044"]
+
+其中  host: 10.0.40.189应为${serverip}

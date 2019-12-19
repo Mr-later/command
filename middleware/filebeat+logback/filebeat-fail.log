@@ -1,0 +1,55 @@
+[hlwztprd@pztzjtyjrvapp2 filebeat]$ tail -300f filebeat.log 
+2019/12/05 17:08:55.537181 beat.go:297: INFO Home path: [/app/hlwztprd/filebeat] Config path: [/app/hlwztprd/filebeat] Data path: [/app/hlwztprd/filebeat/data] Logs path: [/app/hlwztprd/filebeat/logs]
+2019/12/05 17:08:55.537234 beat.go:192: INFO Setup Beat: filebeat; Version: 5.6.9
+2019/12/05 17:08:55.537352 logstash.go:91: INFO Max Retries set to: 3
+2019/12/05 17:08:55.537484 outputs.go:108: INFO Activated logstash as output plugin.
+2019/12/05 17:08:55.537616 publish.go:300: INFO Publisher name: pztzjtyjrvapp2
+2019/12/05 17:08:55.537964 async.go:63: INFO Flush Interval set to: 1s
+2019/12/05 17:08:55.537978 async.go:64: INFO Max Bulk Size set to: 2048
+2019/12/05 17:08:55.538208 beat.go:233: INFO filebeat start running.
+2019/12/05 17:08:55.538242 registrar.go:68: INFO No registry file found under: /app/hlwztprd/filebeat/data/registry. Creating a new registry file.
+2019/12/05 17:08:55.538658 metrics.go:23: INFO Metrics logging every 30s
+2019/12/05 17:08:55.555043 registrar.go:106: INFO Loading registrar data from /app/hlwztprd/filebeat/data/registry
+2019/12/05 17:08:55.555126 registrar.go:123: INFO States Loaded from registrar: 0
+2019/12/05 17:08:55.555210 crawler.go:38: INFO Loading Prospectors: 1
+2019/12/05 17:08:55.555202 registrar.go:236: INFO Starting Registrar
+2019/12/05 17:08:55.555256 sync.go:41: INFO Start sending events to output
+2019/12/05 17:08:55.555389 spooler.go:63: INFO Starting spooler: spool_size: 256; idle_timeout: 5s
+2019/12/05 17:08:55.555413 prospector_log.go:65: INFO Prospector with previous states loaded: 0
+2019/12/05 17:08:55.555596 prospector.go:124: INFO Starting prospector of type: log; id: 12013349314628283702 
+2019/12/05 17:08:55.555635 crawler.go:58: INFO Loading and starting Prospectors completed. Enabled prospectors: 1
+2019/12/05 17:08:55.556128 log.go:91: INFO Harvester started for file: /app/hlwztprd/filebeat/log/sam.2019-12-06-0.log
+2019/12/05 17:08:55.556346 log.go:91: INFO Harvester started for file: /app/hlwztprd/filebeat/log/sam.2019-12-05-0.log
+2019/12/05 17:08:55.556441 log.go:91: INFO Harvester started for file: /app/hlwztprd/filebeat/log/agency20191205.0.log
+2019/12/05 17:08:55.556752 log.go:91: INFO Harvester started for file: /app/hlwztprd/filebeat/log/agency20191206.0.log
+2019/12/05 17:09:25.540183 metrics.go:39: INFO Non-zero metrics in the last 30s: filebeat.harvester.open_files=4 filebeat.harvester.running=4 filebeat.harvester.started=4 libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.write_bytes=57430 libbeat.publisher.published_events=252 registrar.writes=1
+2019/12/05 17:09:25.581590 sync.go:105: ERR Failed to publish events (host: 10.0.41.144:5044:10200), caused by: read tcp 10.0.40.100:38198->10.0.41.144:5044: i/o timeout
+2019/12/05 17:09:25.581639 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:38198->10.0.41.144:5044: i/o timeout
+2019/12/05 17:09:55.539061 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.read_errors=1 libbeat.logstash.publish.write_bytes=57252 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:09:56.596389 sync.go:105: ERR Failed to publish events (host: 10.0.41.134:5044:10200), caused by: read tcp 10.0.40.100:55994->10.0.41.134:5044: i/o timeout
+2019/12/05 17:09:56.596450 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:55994->10.0.41.134:5044: i/o timeout
+2019/12/05 17:10:00.560109 log.go:116: INFO File is inactive: /app/hlwztprd/filebeat/log/sam.2019-12-05-0.log. Closing because close_inactive of 1m0s reached.
+2019/12/05 17:10:00.574246 log.go:116: INFO File is inactive: /app/hlwztprd/filebeat/log/sam.2019-12-06-0.log. Closing because close_inactive of 1m0s reached.
+2019/12/05 17:10:25.543406 metrics.go:39: INFO Non-zero metrics in the last 30s: filebeat.harvester.open_files=-2 libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.read_errors=1 libbeat.logstash.publish.write_bytes=57052 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:10:28.614173 sync.go:105: ERR Failed to publish events (host: 10.0.41.135:5044:10200), caused by: read tcp 10.0.40.100:60510->10.0.41.135:5044: i/o timeout
+2019/12/05 17:10:28.614276 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:60510->10.0.41.135:5044: i/o timeout
+2019/12/05 17:10:55.543298 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.read_errors=1 libbeat.logstash.publish.write_bytes=57459 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:11:02.627001 sync.go:105: ERR Failed to publish events (host: 10.0.41.134:5044:10200), caused by: read tcp 10.0.40.100:56026->10.0.41.134:5044: i/o timeout
+2019/12/05 17:11:02.627089 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:56026->10.0.41.134:5044: i/o timeout
+2019/12/05 17:11:25.543398 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.read_errors=1 libbeat.logstash.publish.write_bytes=57018 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:11:40.640580 sync.go:105: ERR Failed to publish events (host: 10.0.41.144:5044:10200), caused by: read tcp 10.0.40.100:38262->10.0.41.144:5044: i/o timeout
+2019/12/05 17:11:40.640662 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:38262->10.0.41.144:5044: i/o timeout
+2019/12/05 17:11:55.543382 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.publish.read_errors=1 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:12:25.543464 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.write_bytes=57050
+2019/12/05 17:12:26.653976 sync.go:105: ERR Failed to publish events (host: 10.0.41.134:5044:10200), caused by: read tcp 10.0.40.100:56062->10.0.41.134:5044: i/o timeout
+2019/12/05 17:12:26.654036 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:56062->10.0.41.134:5044: i/o timeout
+2019/12/05 17:12:55.543382 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.publish.read_errors=1 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:13:25.543361 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.write_bytes=57274
+2019/12/05 17:13:28.668226 sync.go:105: ERR Failed to publish events (host: 10.0.41.144:5044:10200), caused by: read tcp 10.0.40.100:38314->10.0.41.144:5044: i/o timeout
+2019/12/05 17:13:28.668292 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:38314->10.0.41.144:5044: i/o timeout
+2019/12/05 17:13:55.543300 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.publish.read_errors=1 libbeat.logstash.published_but_not_acked_events=252
+2019/12/05 17:14:25.543339 metrics.go:34: INFO No non-zero metrics in the last 30s
+2019/12/05 17:14:55.543432 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.call_count.PublishEvents=1 libbeat.logstash.publish.write_bytes=57495
+2019/12/05 17:14:58.680548 sync.go:105: ERR Failed to publish events (host: 10.0.41.135:5044:10200), caused by: read tcp 10.0.40.100:60628->10.0.41.135:5044: i/o timeout
+2019/12/05 17:14:58.680640 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:60628->10.0.41.135:5044: i/o timeout
+2019/12/05 17:15:25.547679 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.publish.read_errors=1 libbeat.logstash.published_but_not_acked_events=252
