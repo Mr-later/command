@@ -1,0 +1,6 @@
+移动展业访问统一接入：
+curl  http://10.0.40.29:8101/WebServiceEndpoint?wsdl
+
+协议：
+银保通：socket
+agency：http
