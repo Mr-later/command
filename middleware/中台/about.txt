@@ -4,3 +4,24 @@ curl  http://10.0.40.29:8101/WebServiceEndpoint?wsdl
 协议：
 银保通：socket
 agency：http
+
+
+openshift
+不同协议在docker中配置router时不一样
+
+socket  interval
+
+
+负载到router无需开通防火墙
+
+A区的应用访问B区的负载：开通node到负载
+
+node与router可在一起 可隔离
+
+
+
+负载到router
+即 负载ip：port  对应 三个router 的各个端口
+router的所有端口不重复
+其中router能绑定到access 是service  有绑定应用
+
