@@ -1,0 +1,76 @@
+ansiColor('xterm') {
+
+	def jdk = "JDK1.8.0_144"
+	    maven = 'Maven-3.5.0'
+	    artifactId = 'fin-application'
+		ymlProfiles = 'uat'
+		appIP = 'webularapp-uat1-app03.abclife.cn'
+		tomcatParameter = ''
+		ymlPort = ''
+	node {
+	   
+		stage('loading files'){
+			configFileProvider([configFile(fileId: 'pom.xml', targetLocation: 'pom.xml')]) {
+				// 加载 从Nexus 复制 应用jar 所需的pom
+			}
+			configFileProvider([configFile(fileId: 'startup.sh', targetLocation: 'startup.sh')]) {
+				// 加载 启动脚本 
+			}
+			configFileProvider([configFile(fileId: "${artifactId}", targetLocation: "${artifactId}.yml")]) {
+				// 加载 应用配置yml文件 
+			}
+		}
+		stage("get ymlPort"){
+		    script {
+				//读取 yml文件中 对应环境的端口
+                def getPort = sh returnStdout: true ,script: "cat ${artifactId}.yml |grep \"^.*profiles: ${ymlProfiles}\$\" -B2|grep 'port'|awk '{print \$2}'"
+                ymlPort = getPort.trim()
+                echo "${ymlPort}"
+            }
+		}
+		stage('maven copy jar'){
+			withMaven(globalMavenSettingsConfig: 'GlobalSettings', jdk: "${jdk}", maven: "${maven}", mavenSettingsConfig: 'settings') {
+				// 执行 maven 
+				sh "mvn dependency:copy -Dabc.artifactId=${artifactId} -Dabc.version=${appVersion}"
+			}
+		}
+
+
+		stage('upload files to server'){
+			sshPublisher(
+				publishers: [
+					sshPublisherDesc(
+						configName: "${appIP}", 
+						transfers: [
+							sshTransfer(
+								excludes: '',
+								execCommand: "mkdir -p \$(echo /app/`whoami`/${ymlProfiles});mv ${artifactId}.yml ${artifactId}.jar startup.sh -t /app/`whoami`/${ymlProfiles}/ ;cd /app/`whoami`/${ymlProfiles};echo \"sh startup.sh ${artifactId} ${ymlProfiles} \$(cat /app/`whoami`/${ymlProfiles}/${artifactId}.yml |grep \"^.*profiles: ${ymlProfiles}\$\" -B2|grep 'port'|awk '{print \$2}') ' ${tomcatParameter}'\" > startUP${artifactId}.sh; sh startUP${artifactId}.sh ",
+								execTimeout: 120000,
+								flatten: false,
+								makeEmptyDirs: false,
+								noDefaultExcludes: false,
+								patternSeparator: '[, ]+',
+								remoteDirectory: '',
+								remoteDirectorySDF: false,
+								removePrefix: '',
+								sourceFiles: "${artifactId}.yml,${artifactId}.jar,startup.sh"
+							)
+						],
+						usePromotionTimestamp: false,
+						useWorkspaceInPromotion: false,
+						verbose: true
+					)
+				]
+			) 
+		}  
+	}
+	
+	sleep 60
+	
+	node{
+		stage('check health'){
+			httpRequest consoleLogResponseBody: true, responseHandle: 'NONE', timeout: 10, url: "http://${appIP}:${ymlPort}/health", validResponseContent: 'UP'
+		}
+	}
+}
+

@@ -53,3 +53,9 @@
 2019/12/05 17:14:58.680548 sync.go:105: ERR Failed to publish events (host: 10.0.41.135:5044:10200), caused by: read tcp 10.0.40.100:60628->10.0.41.135:5044: i/o timeout
 2019/12/05 17:14:58.680640 single.go:91: INFO Error publishing events (retrying): read tcp 10.0.40.100:60628->10.0.41.135:5044: i/o timeout
 2019/12/05 17:15:25.547679 metrics.go:39: INFO Non-zero metrics in the last 30s: libbeat.logstash.publish.read_errors=1 libbeat.logstash.published_but_not_acked_events=252
+
+
+
+
+是收集到的日志格式不是json格式导致的。
+将输出文件格式修改，然后logstash就正常收集了。

@@ -1,0 +1,29 @@
+ansiColor('xterm') {
+    node {
+        ansiColor('xterm') {
+            node {
+                stage('init parameter') {
+                    profiles = "${JOB_NAME}".split('_')[1];
+                    channel = "${JOB_NAME}".split('_')[2];
+                    artifactId = "${JOB_NAME}".split('_')[3];
+                }
+                stage("add configFile"){
+                    configFileProvider([configFile(fileId: "application_${profiles}_${channel}", targetLocation: "application_${profiles}_${channel}", variable: "application_${profiles}_${channel}")]) {
+                    }
+                }
+                stage('clean redis') {
+                    def applicationFile = readProperties file: "${WORKSPACE}/application_${profiles}_${channel}"
+                    redis_host=applicationFile["spring.redis.host"];
+                    redis_port=applicationFile["spring.redis.port"];
+                    if(redis_key.text == "flushall"){
+                        sh "/redis/redis/src/redis-cli -h ${redis_host} -p ${redis_port} flushall"
+                    }else{
+                        sh "/redis/redis/src/redis-cli -h ${redis_host} -p ${redis_port} --scan --pattern \"*${redis_key}*\" | xargs -L 2000 /redis/redis/src/redis-cli -h ${redis_host} -p ${redis_port} del"
+                        sh "/redis/redis-cli -h -h ${redis_host} -p ${redis_port} eval \"local keys = redis.call('keys', ARGV[1])  for i=1,#keys,5000 do  redis.call('del', unpack(keys, i, math.min(i+4999, #keys)))  end  return keys\" 0  *${redis_key}*"
+
+                    }
+                }
+            }
+        }
+    }
+}

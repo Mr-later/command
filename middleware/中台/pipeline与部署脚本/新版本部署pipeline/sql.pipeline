@@ -1,0 +1,47 @@
+ansiColor('xterm') {
+    // 参数化构建需要两个参数 一个是 分支  branch   一个 文件名称列表 inputSQLFileName
+    node {
+        stage("get SQLFile") {
+            checkout(
+                    [
+                            $class                           : 'GitSCM',
+                            branches                         : [[name: '${branch}']],
+                            doGenerateSubmoduleConfigurations: false,
+                            submoduleCfg                     : [],
+                            userRemoteConfigs                : [
+                                    [
+                                            credentialsId: 'zkrzhangqiang1',
+                                            url          : 'git@10.0.59.186:ICS/oracle-script/oracle-scirpt.git'
+                                    ]
+                            ]
+                    ]
+            )
+        }
+
+        stage("parameter") {
+            sh "rm -rf shellFile.sh"
+            serverIPAddress='10.10.69.92'
+            def nDate = new Date().format("yyyy-MM-dd");
+            inputSQLFileName_list = inputSQLFileName.split(",");
+            scpFileName=""
+            spoolSettin=""
+            for (int i = 0; i < inputSQLFileName_list.size(); i++) {
+                filenames = sh returnStdout: true , script: "find ./ -name ${inputSQLFileName_list[i]}"
+                filenames = filenames.split("\n")[0]
+                oracleUsername = sh returnStdout: true , script: "find ./ -name ${inputSQLFileName_list[i]}|awk -F '[/]' '{print \$2}'"
+                oracleUsername = oracleUsername.split("\n")[0]
+                print filenames+oracleUsername+'*********************************'
+                scpFileName="${scpFileName} "+filenames
+                spoolSettin=spoolSettin+"sqlplus -s ics_cbs_${oracleUsername}/ics_cbs_${oracleUsername}<<EOF\nset head off\nset linesize 20000\nset echo off\nset feedback off\nset pagesize 0\nset termout off\nset trimout on\nset trimspool on\nspool ./${nDate}/${filenames}.out\n@./${nDate}/${filenames}\nspool  off\nexit;\nEOF\ndate +\"%Y-%m-%d %H:%M:%S\"; cat ./${nDate}/${filenames}.out \n\n"
+            }
+
+            sh "ssh oracle@${serverIPAddress} \"[ -d ~/${nDate} ] && echo ok || mkdir -p ~/${nDate} \" "
+            sh "tar -cPzvf ${nDate}.tar.gz ${scpFileName} ; scp ${nDate}.tar.gz oracle@${serverIPAddress}:~/${nDate}/ ; "
+            sh "ssh oracle@${serverIPAddress} \"cd ${nDate};tar -zxvf ${nDate}.tar.gz \" "
+            def shellText = "#!/bin/bash;-ilex\n #env;\n${spoolSettin}"
+            new File("${WORKSPACE}", "shellFile.sh") << shellText
+            sh "ssh -T oracle@${serverIPAddress} < shellFile.sh "
+            //sh "rm -rf ./*"
+        }
+    }
+}

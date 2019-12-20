@@ -1,0 +1,124 @@
+ansiColor('xterm') {
+    node {
+        /**
+         *  jenkins项目名称定义格式 暂定为 deploy_{profiles}_{channel}_{artifactId}*  通过 jenkins的环境变量 JOB_NAME 截取参数
+         *                          profiles    环境标识
+         *                          channel     渠道标识
+         *                          artifactId  应用模块artifactId
+         *  拼接 获取ip地址的key
+         *                          IPAddressCSVFileName IP地址CSV文件的fileId (jenkins managed files 中预定义好的)
+         *                          IPAddressKey         在CSV中当作的key
+         */
+        stage('init parameter') {
+
+
+            if ('' != appversion) {
+                version = appversion;
+            } else {
+                if ('' != "${parentJobName}") {
+                    sh "echo -e \"${parentJobName}\" > parentJobName";
+                } else {
+                    sh "ls -l;pwd"
+                    parentJobNameFile = new File("${WORKSPACE}/parentJobName");
+                    parentJobName = parentJobNameFile.text.split('\n')[0]
+                }
+                parentPomFile = readMavenPom file: "/${JENKINS_HOME}/workspace/${parentJobName}/pom.xml"
+                version = parentPomFile.getVersion();
+            }
+            sh "echo -e \"当前版本号为: ${version}\""
+            profiles = "${JOB_NAME}".split('_')[1];
+            channel = "${JOB_NAME}".split('_')[2];
+            artifactId = "${JOB_NAME}".split('_')[3];
+            IPAddressCSVFileName = 'IPAddressList.CSV'
+            IPAddressKey = "${profiles}_${channel}_${artifactId}"
+        }
+
+        /**
+         * 加载的配置文件有 (全部  预定义在 jenkins  Managed Files 中)
+         *   "fileId"                           "localFileName"
+         *   ${IPAddressCSVFileName}            ${IPAddressCSVFileName}                 预定义所有应用所需要发布的IP地址列表CSV文件
+         *   pom.xml                            pom.xml                                 从nexus 下载 ${artifactId}.jar 文件 所需要的pom.xml
+         *   startup.sh                         startup.sh                              在服务器上所需要执行的启动命令
+         *   ${JOB_NAME}                        ${artifactId}.yml                       获取端口号需要的文件
+         *   ${JOB_NAME}                        BOOT-INF/classes/application.yml        每个应用 不同的配置
+         *   application_${profiles}_${channel} BOOT-INF/classes/application.properties 公共配置 redis,activemq,datasource,eurake 等等
+         */
+        stage('loading files') {
+            configFileProvider([configFile(fileId: "${IPAddressCSVFileName}", targetLocation: "${IPAddressCSVFileName}", variable: "${IPAddressCSVFileName}")]) {
+            }
+            configFileProvider([configFile(fileId: 'pom.xml', targetLocation: 'pom.xml')]) {
+            }
+            configFileProvider([configFile(fileId: 'startup.sh', targetLocation: 'startup.sh')]) {
+            }
+            configFileProvider([configFile(fileId: "${JOB_NAME}", targetLocation: "BOOT-INF/classes/application.yml")]) {
+            }
+            configFileProvider([configFile(fileId: "${JOB_NAME}", targetLocation: "${artifactId}.yml")]) {
+            }
+            configFileProvider([configFile(fileId: "application_${profiles}_${channel}", targetLocation: "BOOT-INF/classes/application.properties")]) {
+            }
+        }
+
+        /**
+         * 注: maven 工具 需要在 jenkins 系统设置 -> 全局工具配置 中 配置好
+         *
+         * 将 BOOT-INF/classes/application.yml 和 BOOT-INF/classes/application.yml 打包到  ${artifactId}.jar 里
+         */
+        stage('maven tool') {
+            withMaven(globalMavenSettingsConfig: 'globalMavenSettingsConfig', maven: 'apache-maven-3.5.2', mavenSettingsConfig: 'mavenSettingsConfig') {
+                sh "mvn dependency:copy -Dabc.artifactId=${artifactId} -Dabc.version=${version} "
+            }
+            sh "echo -e \"\\ninfo.version=${version}\" >>BOOT-INF/classes/application.properties"
+            sh "echo -e \"\\napplicationName=${artifactId}\" >>BOOT-INF/classes/application.properties"
+            sh label: '', script: "jar -uvf ${artifactId}.jar BOOT-INF/classes/application.properties;jar -uvf ${artifactId}.jar BOOT-INF/classes/application.yml"
+        }
+
+        /**
+         *
+         *   读取IP地址CSV文件 (预定义在 jenkins  Managed Files 中) 获取当前应用需要发布的服务器IP地址列表
+         *   循环用 ssh 插件 对每个应用服务器发送 应用jar 并执行 startup.sh
+         *
+         *   暂缺 服务器IP地址为空时 直接退出的部分
+         */
+        stage('copy files to server and restart') {
+            IPAddressCSVFile = readCSV file: "/${WORKSPACE}/${IPAddressCSVFileName}", format: org.apache.commons.csv.CSVFormat.RFC4180
+            thisJobIpAddressList = null
+            for (int index = 0; index < IPAddressCSVFile.size(); index++) {
+                if (IPAddressCSVFile[index].get(0) == "${IPAddressKey}") {
+                    thisJobIpAddressList = ['']
+                    thisJobIpAddressList = IPAddressCSVFile[index]
+                    println "文件中存在此key的ip地址列表!";
+                    break;
+                }
+            }
+            if (thisJobIpAddressList != null) {
+                for (int i = 1; i < thisJobIpAddressList.size(); i++) {
+                    if (" " != "${thisJobIpAddressList.get(i)}" && "" != "${thisJobIpAddressList.get(i)}") {
+                        println "this is server node${i} >>>>> ipAddress:${thisJobIpAddressList.get(i)}"
+                        sshPublisher(publishers: [sshPublisherDesc(configName: "${thisJobIpAddressList.get(i)}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "echo 'nice' > nice.txt ;ifconfig;pwd;sh startup.sh ${profiles}_${channel} ${artifactId} ", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: "${artifactId}.jar,${artifactId}.yml,startup.sh")], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                    }
+                }
+            } else {
+                println '服务器IP列表为空。'
+            }
+        }
+    }
+
+    sleep 60
+
+    /**
+     *  读取 yml文件中 server.port
+     *  通过 thisJobIpAddressList 循环遍历 对 应用发布的每个IP地址上的应用 发HTTP请求 进行健康检查。
+     */
+    node {
+        stage('health') {
+            def yamlText = readYaml file: "${artifactId}.yml"
+            def appServerPort = yamlText.server.port
+            for (int i = 1; i < thisJobIpAddressList.size(); i++) {
+                if (" " != "${thisJobIpAddressList.get(i)}" && "" != "${thisJobIpAddressList.get(i)}") {
+                    println "this is server node${i} >>>>> ipAddress:${thisJobIpAddressList.get(i)}"
+                    httpRequest consoleLogResponseBody: true, contentType: 'TEXT_HTML', responseHandle: 'NONE', timeout: 20, url: "http://${thisJobIpAddressList.get(i)}:${appServerPort}/health", validResponseContent: 'UP'
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+ansiColor('xterm') {
+    node {
+        stage('checkout from gitlab') {
+            checkout([$class: 'GitSCM', branches: [[name: "${gitlab_branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'zkrzhangqiang1', url: "${gitlab_url}"]]])
+        }
+        stage('maven tool') {
+            withMaven(globalMavenSettingsConfig: 'globalMavenSettingsConfig', maven: 'apache-maven-3.5.2', mavenSettingsConfig: 'mavenSettingsConfig') {
+                sh "mvn clean install  -Dmaven.test.skip=true "
+            }
+        }
+        stage('build other projects') {
+            println 'build other projects!';
+            arr_job_list = job_list.split('\n');
+            println "${arr_job_list}"
+            map_build = [:]
+            for (String jobName : arr_job_list) {
+                def build_job_name = "${jobName}"
+                map_build.put((build_job_name), {
+                    build job: (build_job_name), parameters: [string(name: 'parentJobName', value: "${JOB_NAME}")]
+                })
+            }
+            println map_build
+            parallel map_build
+        }
+    }
+}

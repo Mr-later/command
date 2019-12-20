@@ -1,0 +1,88 @@
+ansiColor('xterm') {
+    node {
+        /**
+         *  jenkins项目名称定义格式 暂定为 deploy_{profiles}_{channel}_{artifactId}*  通过 jenkins的环境变量 JOB_NAME 截取参数
+         *                          profiles    环境标识
+         *                          channel     渠道标识
+         *                          artifactId  应用模块artifactId
+         *  拼接 获取ip地址的key
+         *                          IPAddressCSVFileName IP地址CSV文件的fileId (jenkins managed files 中预定义好的)
+         *                          IPAddressKey         在CSV中当作的key
+         */
+        stage('init parameter') {
+            profiles = "${JOB_NAME}".split('_')[1];
+            channel = "${JOB_NAME}".split('_')[2];
+            artifactId = "${JOB_NAME}".split('_')[3];
+            IPAddressCSVFileName = 'IPAddressList.CSV'
+            IPAddressKey = "${profiles}_${channel}_${artifactId}"
+        }
+
+        /**
+         * 加载的配置文件有 (全部  预定义在 jenkins  Managed Files 中)
+         *   "fileId"                           "localFileName"
+         *   ${IPAddressCSVFileName}            ${IPAddressCSVFileName}                 预定义所有应用所需要发布的IP地址列表CSV文件
+         *   pom.xml                            pom.xml                                 从nexus 下载 ${artifactId}.jar 文件 所需要的pom.xml
+         *   startup.sh                         startup.sh                              在服务器上所需要执行的启动命令
+         *   ${JOB_NAME}                        ${artifactId}.yml                       获取端口号需要的文件
+         *   ${JOB_NAME}                        BOOT-INF/classes/application.yml        每个应用 不同的配置
+         *   application_${profiles}_${channel} BOOT-INF/classes/application.properties 公共配置 redis,activemq,datasource,eurake 等等
+         */
+        stage('loading files') {
+            configFileProvider([configFile(fileId: "${IPAddressCSVFileName}", targetLocation: "${IPAddressCSVFileName}", variable: "${IPAddressCSVFileName}")]) {
+            }
+            configFileProvider([configFile(fileId: "${JOB_NAME}", targetLocation: "router.properties")]) {
+            }
+            configFileProvider([configFile(fileId: "deploy_${IPAddressKey}", targetLocation: "${artifactId}.yml")]) {
+            }
+        }
+
+
+        /**
+         *
+         *   读取IP地址CSV文件 (预定义在 jenkins  Managed Files 中) 获取当前应用需要发布的服务器IP地址列表
+         *   循环用 ssh 插件 对每个应用服务器发送 应用jar 并执行 startup.sh
+         *
+         *   暂缺 服务器IP地址为空时 直接退出的部分
+         */
+        stage('copy files to server and restart') {
+            IPAddressCSVFile = readCSV file: "/${WORKSPACE}/${IPAddressCSVFileName}", format: org.apache.commons.csv.CSVFormat.RFC4180
+            thisJobIpAddressList = null
+            for (int index = 0; index < IPAddressCSVFile.size(); index++) {
+                if (IPAddressCSVFile[index].get(0) == "${IPAddressKey}") {
+                    thisJobIpAddressList = ['']
+                    thisJobIpAddressList = IPAddressCSVFile[index]
+                    println "文件中存在此key的ip地址列表!";
+                    break;
+                }
+            }
+            if (thisJobIpAddressList != null) {
+                for (int i = 1; i < thisJobIpAddressList.size(); i++) {
+                    if (" " != "${thisJobIpAddressList.get(i)}" && "" != "${thisJobIpAddressList.get(i)}") {
+                        println "this is server node${i} >>>>> ipAddress:${thisJobIpAddressList.get(i)}"
+                        sh "scp router.properties icsapp@${thisJobIpAddressList.get(i)}:/app/icsapp"
+                    }
+                }
+            } else {
+                println '服务器IP列表为空。'
+            }
+        }
+    }
+
+
+    /**
+     *  读取 yml文件中 server.port
+     *  通过 thisJobIpAddressList 循环遍历 对 应用发布的每个IP地址上的应用 发HTTP请求 进行健康检查。
+     */
+    node {
+        stage('health') {
+            def yamlText = readYaml file: "${artifactId}.yml"
+            def appServerPort = yamlText.server.port
+            for (int i = 1; i < thisJobIpAddressList.size(); i++) {
+                if (" " != "${thisJobIpAddressList.get(i)}" && "" != "${thisJobIpAddressList.get(i)}") {
+                    println "this is server node${i} >>>>> ipAddress:${thisJobIpAddressList.get(i)}"
+                    httpRequest consoleLogResponseBody: true, contentType: 'TEXT_HTML', responseHandle: 'NONE', timeout: 20, url: "http://${thisJobIpAddressList.get(i)}:${appServerPort}/router/reflesh", validResponseContent: ''
+                }
+            }
+        }
+    }
+}
