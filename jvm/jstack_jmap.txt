@@ -4,7 +4,7 @@ jvm分析常用命令：
 jstack pid>1.txt  抓取线程dump文件 输出到制定的文件。
 2、抓取带锁的线程的文件
 jstack -l  pid>1.txt 抓取带锁的线程dump文件 输出到制定的文件
-3、抓取内存等dump文件
+3、抓取内存等dump文件，抓取的结果使用jprofile工具
 jmap -dump:format=b,file=test.bin pid
 4、指令动态抓取GC等
 jmap -heap pid

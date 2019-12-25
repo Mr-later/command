@@ -4,7 +4,7 @@ api of eureka
 在Eureka服务中心重复注册服务；或者之前已经死掉的服务还存在于Eureka服务中心，这时我们需要将该服务从Eureka服务中心删除导致在Eureka服务中心重复注册了同名的服务，具体如下：
 curl -X DELETE "http://192.168.0.248:8761/eureka/apps/USER/172.21.0.10:zkr-product:6868"
 以上  固定不变的：
-eureka/apps是Eureka api 的固定url
+eureka/apps  是Eureka api 的固定url
 可变的：
 192.168.0.248:8761  是请求Eureka管理界面的url
 USER                 是服务注册的服务名一般指application:name，可公用因分布式
