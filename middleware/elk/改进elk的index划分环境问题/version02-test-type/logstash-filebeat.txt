@@ -1,0 +1,28 @@
+filebeat里添加document_type配置，定义一个识别号- input_type: log
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - /var/logs/xx.log
+  document_type: xx
+  paths:
+    - /data/logs/aa.log
+  document_type: aa
+
+
+然后在logstash里配置对应的type
+output {
+    if [type] =="xx"{
+            elasticsearch {
+            hosts => ["*.*.*.*:9200"]
+            index => "xx-%{+YYYY.MM.dd}"
+            document_type => "log"
+        }
+    }
+    if [type] =="aa"{
+            elasticsearch {
+              hosts => ["*.*.*.*:9200"]
+              index => "aa-%{+YYYY.MM.dd}"
+              document_type => "log"
+                }
+    }
+}
