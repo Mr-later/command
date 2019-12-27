@@ -1,3 +1,6 @@
 实用网址
 1.yml转换properties
 https://www.toyaml.com/index.html
+
+2
+http://www.21yunwei.com/archives/5239

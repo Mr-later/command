@@ -39,6 +39,30 @@ vim /etc/security/limits.conf文件，添加以以下两行即可解决
 vim /etc/security/limits.conf文件，添加以下两行即可解决
 * soft nproc  4096
 * hard nproc  4096
+
+_______________________________________________________________________________________________________________________________________
+
+补充：
+永久生效的方法：
+
+修改/etc/security/limits.conf文件
+
+    在文件末尾添加
+    * soft nofile 204800
+    * hard nofile 204800
+    * soft nproc 204800
+    * hard nproc 204800
+
+网上都是说修改这一个文件就行，但是我修改后重启服务器发现没更改过来。
+后来发现，还需要修改两个文件
+1、/etc/security/limits.d/90-nproc.conf文件尾添加
+* soft nproc 204800
+* hard nproc 204800
+2、/etc/security/limits.d/def.conf文件尾添加
+* soft nofile 204800
+* hard nofile 204800
+
+____________________________________________________________________________________________________________________________________
 ————————————————————————————————————————————————————————————————————————————————
 报错：
 [2019-12-27T10:17:07,764][INFO ][o.e.b.BootstrapChecks    ] [q6BVpLR] bound or publishing to a non-loopback or non-link-local address, enforcing bootstrap checks
