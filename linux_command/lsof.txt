@@ -1,0 +1,35 @@
+刪除一个问价之后，有程序占用继续使用这个文件，进程未被杀死，所以磁盘空间df -h查询依然为未释放。
+
+rm -f  access-application.log
+lsof | grep  deleted
+jps
+ps -ef |  grep  java
+cd /proc/
+cd  5871
+cd fd
+lsof   -p  5871
+lsof   -p  5871 |  grep log
+> /app/hlwztprd/access-application.log
+df -h
+ll 1
+> /proc/5871/fd/1
+df -h
+
+
+[hlwztprd@ptyjrprdvapp2 fd]$ lsof   -p  5871 |  grep log
+lsof: WARNING: can't stat() fuse.gvfs-fuse-daemon file system /root/.gvfs
+      Output information may be incomplete.
+java    5871 hlwztprd    1w   REG              253,1 44403390726   2490494 /app/hlwztprd/access-application.log (deleted)
+java    5871 hlwztprd    2w   REG              253,1 44403390726   2490494 /app/hlwztprd/access-application.log (deleted)
+java    5871 hlwztprd    3u   REG              253,0        1508   1835043 /opt/dynatrace/dynatrace-6.5/log/dt_tomcat_nebular_63_bootstrap_5871.0.log
+java    5871 hlwztprd    5u   REG              253,0        9450   1835048 /opt/dynatrace/dynatrace-6.5/log/dt_tomcat_nebular_63_5871.0.log
+java    5871 hlwztprd  669w   REG              253,1    80769489   2490480 /app/hlwztprd/filebeat/log/access.2019-12-24-3.log
+
+
+[hlwztprd@ptyjrprdvapp2 fd]$ pwd
+/proc/5871/fd
+
+
+
+
+
