@@ -49,6 +49,65 @@ else
     dirdate=`date +%Y%m%d`
 fi
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export dirdate
 export updir=./abc/$dirdate
 
