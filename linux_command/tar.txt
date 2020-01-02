@@ -1,22 +1,10 @@
-每天打包前一天的日志
+脚本例子：
+1.每天打包前一天的日志
+2.
 
-cd $logpath;nohuap   tar  --remove-files -zcvf  ${bak_path}/${bakdate}.tar.gz    ./*${bakdate}*.log >/dev/null 2>&1 &
-说明：1.tar包可以写成绝对路径 2.文件夹写成绝对路径则打成的包包含路径 3.最后cd到目录下去打包 4.--remove-files 写在-cvf前
-./*${bakdate}*.log 会有./
-希望有输出日志能看到打包到哪一步了
+1.tar包可以写成绝对路径 2.文件夹写成绝对路径则打成的包包含路径 3.最后cd到目录下去打包 4.--remove-files 写在-cvf前
 
+一。排除某个文件
+https://www.cnblogs.com/sxshaolong/p/10857115.html
 
-[root@tstgsjjhvapp ~]# cat tar.sh
-#!/bin/bash
-logpath=/app/icsapp/local/log/
-bak_path=/app/icsapp/local/bak_log
-bakdate=`date -d "1 day ago" +%Y-%m-%d`
-
-if [ ! -d $bak_path ]; then
-  mkdir -p $bak_path
-fi
-cd $logpath
-nohup   tar  -zcvf  ${bak_path}/${bakdate}.tar.gz    *${bakdate}*.log  --remove-files > tar.log 2>&1 &
-
-
-有待改进的点：tar打包时间长 需等到全部打包完成有输出信息提示end  wait的用法
+二。tar -tf
