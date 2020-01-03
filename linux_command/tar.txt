@@ -7,4 +7,5 @@
 一。排除某个文件
 https://www.cnblogs.com/sxshaolong/p/10857115.html
 
-二。tar -tf
+二。不解压文件查看tar包中文件列表
+tar -tf tar包
