@@ -1,11 +1,11 @@
 配置java_home 在/etc/profile 文件和~/.bash_profile都可
 
 
-linux配置JAVA_HOME时遇到的问题：
-在/etc/profile文件中配置之后不好使，使用java -version显示的依然是系统版本 而不是安装版本
-解决办法：软连接
+linux配置JAVA_HOME时遇到的问题:
+在/etc/profile文件中配置之后不好使,使用java -version显示的依然是系统版本 而不是安装版本
+解决办法:软连接
 
-#通过软链接设置，英文修改/etc/profile文件之后不好用，这个也是分服务器的
+#通过软链接设置,英文修改/etc/profile文件之后不好用,这个也是分服务器的
 ln -s /MSP/jdk1.8.0_144/bin/java /usr/bin/java
 ln -s /usr/local/jdk1.8.0_144/bin/java /usr/bin/
 

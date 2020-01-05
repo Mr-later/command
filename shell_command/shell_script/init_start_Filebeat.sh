@@ -31,11 +31,11 @@ cd ${filebeat_path}; sh startFilebeat.sh
 
 
 #脚本说明:
-#描述:在A主机远程B1,B2,B3主机，安装filebeat并配置
+#描述:在A主机远程B1,B2,B3主机,安装filebeat并配置
 
-#第一步：将安装包传至远程服务器
+#第一步:将安装包传至远程服务器
 #scp filebeat-5.6.9-linux-x86_64.tar.gz  hlwztprd@10.0.40.99:/app/hlwztprd
-#第二步：调用init_start_Filebeat.sh脚本,将远程主机的配置配好 并 启动服务.
+#第二步:调用init_start_Filebeat.sh脚本,将远程主机的配置配好 并 启动服务.
 ssh  user@ip  < init_start_Filebeat.sh >show.log
 #第三步:在远程主机验证 ps  -ef  |  grep filebeat 时有没有进程的情况,此时重新开启一个终端登录即可.
 

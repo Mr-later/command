@@ -1,4 +1,4 @@
-这篇中是只需要expect password的，ssh远程主机只有提示password的
+这篇中是只需要expect password的,ssh远程主机只有提示password的
 
 #!/usr/bin/bash
 

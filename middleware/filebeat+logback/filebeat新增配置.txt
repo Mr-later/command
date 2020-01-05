@@ -1,22 +1,22 @@
  #新增的filebeat配置
-  #可以指定Filebeat忽略指定时间段以外修改的日志内容比如2h两个小时或者5m(5分钟)。
-  #超过该时间之前更新的文件filebeta不采集，默认关闭。
+  #可以指定Filebeat忽略指定时间段以外修改的日志内容比如2h两个小时或者5m(5分钟).
+  #超过该时间之前更新的文件filebeta不采集,默认关闭.
   ignore_older: 70h 
-  #启动选项时，如果在制定时间没有被读取，将关闭文件句柄
-  #当harvester读取文件最后一行后，在该时间内文件内容没有变化就关闭文件句柄(file handle)。官方建议将这个参数设置为一个比文件最大更新间隔大的值默认值为5min.
+  #启动选项时,如果在制定时间没有被读取,将关闭文件句柄
+  #当harvester读取文件最后一行后,在该时间内文件内容没有变化就关闭文件句柄(file handle).官方建议将这个参数设置为一个比文件最大更新间隔大的值默认值为5min.
   close_inactive: 1m
-  #当文件被删除时，filebeat关闭文件的读取处理和clearn_remove一起使用
+  #当文件被删除时,filebeat关闭文件的读取处理和clearn_remove一起使用
   close_removed: true
   #从注册表中删除先前收获的文件的状态 设置需要大于ignore+scan_frequency,确保在文件仍收集时不被删除状态
   clean_inactive: 72h
-  #当文件在磁盘中找不到时，清理注册表中的文件信息
+  #当文件在磁盘中找不到时,清理注册表中的文件信息
   clean_removed: true
-  #当选项启动时，filebeat会给每个harvester设置预定义时间，不管这个文件是否被读取，达到设定时间后，将被关闭
-  #harvester采集文件的生命周期，超过设定时间就关闭采集，等待scan_frequency下一次重新开始读取文件
+  #当选项启动时,filebeat会给每个harvester设置预定义时间,不管这个文件是否被读取,达到设定时间后,将被关闭
+  #harvester采集文件的生命周期,超过设定时间就关闭采集,等待scan_frequency下一次重新开始读取文件
   close_timeout: 3h
   #设置filebeat搜索新更新文件的频率
   #scan_frequency: 30s   
-  #后台事件计数阈值，超过后强制发送，默认2048
+  #后台事件计数阈值,超过后强制发送,默认2048
 filebeat.spool_size: 256
 #新增的filebeat配置
 

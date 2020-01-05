@@ -11,7 +11,7 @@ linux中registry中一条日志记录的内容如下
 	inode　　日志文件的inode号
 	device    日志所在磁盘的磁盘编号
 	timestamp　　日志最后一次发生变化的时间戳
-	ttl　　采集失效时间.-1表示只要日志存在，就一直采集该日志
+	ttl　　采集失效时间.-1表示只要日志存在,就一直采集该日志
 　　
 device一列的数字64768有些难理解.这个数字可以通过stat命令得到:
 	stat /var/log/messages
@@ -23,7 +23,7 @@ device一列的数字64768有些难理解.这个数字可以通过stat命令得�
 	Modify: 2017-12-22 11:01:19.401186654 +0800
 	Change: 2017-12-22 11:01:19.401186654 +0800
 
-64768为十进制数，对应十六进制数fd00，对应磁盘为fd,00即253, 0
+64768为十进制数,对应十六进制数fd00,对应磁盘为fd,00即253, 0
 	# ll /dev/dm-0
 	brw-rw----. 1 root disk 253, 0 8月  17 19:30 /dev/dm-0
 	# ll /dev/root
@@ -42,4 +42,4 @@ source 日志文件完整路径
 	filestateos　　操作系统相关
 	idxhi/idxlo/vol    On windows the pair of (volume, idxhi, idxlo) uniquely identifies a file.
 	timestamp　　日志最后一次发生变化的时间戳
-	ttl　　采集失效时间.-1表示只要日志存在，就一直采集该日志
+	ttl　　采集失效时间.-1表示只要日志存在,就一直采集该日志

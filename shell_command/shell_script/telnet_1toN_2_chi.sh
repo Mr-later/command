@@ -2,7 +2,7 @@ THREAD_NUM=30
 mkfifo tmp
 exec 9<>tmp
 rm -rf tmp
-#预先写入指定数量的换行符，一个换行符代表一个进程
+#预先写入指定数量的换行符,一个换行符代表一个进程
 for ((i=0;i<$THREAD_NUM;i++))
 do
     echo -ne "\n" 1>&9
@@ -34,11 +34,11 @@ if [ $# -gt 0 ];then
 fi
 
 #初版
-#将telnet的结果分成了两种情况，1.策略通且应用已经被占用，2.其他
-#iptext.txt格式：
+#将telnet的结果分成了两种情况,1.策略通且应用已经被占用,2.其他
+#iptext.txt格式:
 #     10.133.212.214 8001
 #     10.133.212.214 8002
 #     10.133.212.214 8009
-#执行方式：sh telnet_1toN2_chi.sh iptext.txt
+#执行方式:sh telnet_1toN2_chi.sh iptext.txt
 
 

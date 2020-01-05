@@ -3,7 +3,7 @@
 #        (sleep 1;) | telnet $ip $port >> result.txt
 #可以实现Telnet之后自动退出的功能.
 
-#成功ip的过滤：cut -d '.' -f 1,2,3,4
+#成功ip的过滤:cut -d '.' -f 1,2,3,4
 #由于telnet之后的ip结尾会多一个"."
 #因此通过截取的方式过滤出ip.
 
@@ -43,11 +43,11 @@ done
 cat result.txt successip.txt | sort | uniq -u |grep -v ^# > fail.txt
 
 
-#执行参数：telnet_list.txt
+#执行参数:telnet_list.txt
 #参数格式  ip|port
 
 
 
-#bug是否可以改变以下语句解决，尚待验证：
+#bug是否可以改变以下语句解决,尚待验证:
 #echo "$successIp|$port" > successip.txt
 #改成echo $line >>successip.txt

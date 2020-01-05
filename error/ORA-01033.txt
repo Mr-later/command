@@ -1,6 +1,6 @@
 CannotGetJdbcConnectionException: Could not get JDBC Connection; nested exception is java.sql.SQLRecoverableException: ORA-01033: ORACLE initialization or shutdown in progress\n"}
 
-　数据库在导入数据的过程中，意外关机。重启机器后，pl/sql-developer不能登录数据库，报错ORA-01033:oracle initializationor shutdown in progress。解决步骤如下：
+　数据库在导入数据的过程中,意外关机.重启机器后,pl/sql-developer不能登录数据库,报错ORA-01033:oracle initializationor shutdown in progress.解决步骤如下:
 
     运行cmd
 
@@ -16,7 +16,7 @@ CannotGetJdbcConnectionException: Could not get JDBC Connection; nested exceptio
     Connected to:
     Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
     With the Partitioning, OLAP, Data Mining and Real Application Testing options
-    关闭数据库，重新启动
+    关闭数据库,重新启动
 
     SQL> shutdown immediate
     ORA-01109: database not open
@@ -35,13 +35,13 @@ CannotGetJdbcConnectionException: Could not get JDBC Connection; nested exceptio
     Database mounted.
     ORA-01172: recovery of thread 1 stuck at block 2937401 of file 7
     ORA-01151: use media recovery to recover block, restore backup if needed
-    启动后报ORA-01172，根据提示进行恢复。使用命令 alter database recover
+    启动后报ORA-01172,根据提示进行恢复.使用命令 alter database recover
 
     SQL> alter database recover
     2 ;
 
     Database altered.
-    重新启动数据库，没有报错。pl/sql-developer登陆成功。
+    重新启动数据库,没有报错.pl/sql-developer登陆成功.
 
     SQL> shutdown immediate
     ORA-01109: database not open

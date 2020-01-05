@@ -1,6 +1,6 @@
 
-在ElasticSearch启动时，会占用两个端口9200和9300。
-他们具体的作用如下：
+在ElasticSearch启动时,会占用两个端口9200和9300.
+他们具体的作用如下:
 
-    9200 是ES节点与外部通讯使用的端口。它是http协议的RESTful接口（各种CRUD操作都是走的该端口,如查询：http://localhost:9200/user/_search）。
-    9300是ES节点之间通讯使用的端口。它是tcp通讯端口，集群间和TCPclient都走的它。（java程序中使用ES时，在配置文件中要配置该端口）
+    9200 是ES节点与外部通讯使用的端口.它是http协议的RESTful接口（各种CRUD操作都是走的该端口,如查询:http://localhost:9200/user/_search）.
+    9300是ES节点之间通讯使用的端口.它是tcp通讯端口,集群间和TCPclient都走的它.（java程序中使用ES时,在配置文件中要配置该端口）

@@ -9,7 +9,7 @@ cd /app/xml/abc/201900
 #dir均为以日期命名的文件夹
 for dir  in  $(ls)
 do
-#打过包的文件也在此路径下，所以判断为文件夹的变量继续进行打包
+#打过包的文件也在此路径下,所以判断为文件夹的变量继续进行打包
   [ -d  $dir ] &&  tar zcf  ${dir}.tar.gz $dir
 done
 

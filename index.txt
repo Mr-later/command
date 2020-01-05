@@ -4,7 +4,7 @@
         IDEA_1toN: 在IDEA中从从一个仓库推送到远程的两个仓库的步骤
 2.shell_command:  shell命令和脚本
     2.1:shell_basic_command:基本的shell命令说明
-    2.2：shell_script：实用的shell脚本
+    2.2:shell_script:实用的shell脚本
 3.linux_command
 
 

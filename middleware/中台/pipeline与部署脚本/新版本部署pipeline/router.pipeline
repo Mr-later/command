@@ -63,7 +63,7 @@ ansiColor('xterm') {
                     }
                 }
             } else {
-                println '服务器IP列表为空。'
+                println '服务器IP列表为空.'
             }
         }
     }
@@ -71,7 +71,7 @@ ansiColor('xterm') {
 
     /**
      *  读取 yml文件中 server.port
-     *  通过 thisJobIpAddressList 循环遍历 对 应用发布的每个IP地址上的应用 发HTTP请求 进行健康检查。
+     *  通过 thisJobIpAddressList 循环遍历 对 应用发布的每个IP地址上的应用 发HTTP请求 进行健康检查.
      */
     node {
         stage('health') {

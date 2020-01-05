@@ -2,18 +2,18 @@
 pathA --》 typeA -->grok-->  --》indexA
 pathB --》 typeB -->grok-->  --》indexB
 在kibana中添加Aindex 和 Bindex即可
-不同路径下的文件主要是通过不同type区分。对不同的type做出不同的index。
+不同路径下的文件主要是通过不同type区分.对不同的type做出不同的index.
 
 
-2.通过filebeat对不同文件夹上的日志，在filebeat配置中区分为不同的[fields][indexname]。logstash根据不同的indexname进行操作
+2.通过filebeat对不同文件夹上的日志,在filebeat配置中区分为不同的[fields][indexname].logstash根据不同的indexname进行操作
      filebeat         logstash
 pathA --》 indexnameA -->grok-->  --》indexA
 pathB --》 indexnameB -->grok-->  --》indexB
 
 
-优点，logstash不用总是更改重启，更新filbeat中配置文件即可
+优点,logstash不用总是更改重启,更新filbeat中配置文件即可
 
-3.通过filebeat对不同文件夹上的日志，在filebeat配置中区分为不同的[type]。logstash根据不同的type进行操作
+3.通过filebeat对不同文件夹上的日志,在filebeat配置中区分为不同的[type].logstash根据不同的type进行操作
 
 
 

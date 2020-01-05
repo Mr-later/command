@@ -1,11 +1,11 @@
 shell命令的判断
-实例1：
+实例1:
 查看远程主机是否存在某些目录如/redis
 ssh  user@ip  " [ -d /redis ]  && echo 'ok'  ||  echo '-----'"
 # [ -d /redis ]  判断 远程主机/redis是否存在且为目录
 
 
-实例2	：
+实例2	:
 批量查看/app目录的权限
 for i in `cat ip.txt`
 do
@@ -15,5 +15,5 @@ echo  "--------"
 sleep 1s
 done
 
-说明：
+说明:
 --color=auto  ls输出用于颜色控制的控制字符

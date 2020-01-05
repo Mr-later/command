@@ -1,2 +1,2 @@
-查看cpu是几C，是看的逻辑核心数
+查看cpu是几C,是看的逻辑核心数
 cat /proc/cpuinfo  |  grep  "processor"  | wc -l

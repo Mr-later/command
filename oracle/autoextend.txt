@@ -1,14 +1,14 @@
 查看表空间文件是否为自动增长
 
-1.表空间是有数据文件组成的，所以看表空间是否自增即看数据文件，如下查自增的表空间：
-直接使用本条命令即可,会将所有表空间名称，文件名称，autoextensible打印出来：
+1.表空间是有数据文件组成的,所以看表空间是否自增即看数据文件,如下查自增的表空间:
+直接使用本条命令即可,会将所有表空间名称,文件名称,autoextensible打印出来:
 select tablespace_name,file_name,autoextensible from dba_data_files where autoextensible='YES';
-说明：
+说明:
 其中autoextensible: YES/NO 即表示是否自增.
 
 
 
-2.自动增长机制的设置：
+2.自动增长机制的设置:
 表空间有个自动增长机制
 ALTER DATABASE DATAFILE '/oradata/QYPT/system.dbf' AUTOEXTEND ON;//打开自动增长
 ALTER DATABASE DATAFILE '/oradata/QYPT/system.dbf' AUTOEXTEND ON NEXT 200M ;//每次自动增长200m

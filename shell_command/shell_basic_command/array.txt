@@ -30,7 +30,7 @@ echo ${address[@]#}
 #输出数组个数
 echo ${#address[@]}
 
-# 输出aa，默认address[0]
+# 输出aa,默认address[0]
 #echo ${address}
 
 

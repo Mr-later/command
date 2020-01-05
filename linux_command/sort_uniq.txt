@@ -1,6 +1,6 @@
 sort排序和uniq统计命令
-1，sort：排序的功能，默认安装ASCII码来排序，-n 安装数值排，-r 按照倒序来排
-2，uniq -c  去重和统计
+1,sort:排序的功能,默认安装ASCII码来排序,-n 安装数值排,-r 按照倒序来排
+2,uniq -c  去重和统计
 sort aa.txt |uniq -c |sort -rn
-也可以写成： cat aa.txt | sort -rn | uniq -c |sort -rn ，效果是一样的。
-sort -n 是按照第一列的数值大小进行排序。从小到大，倒序就是 sort -rn
+也可以写成: cat aa.txt | sort -rn | uniq -c |sort -rn ,效果是一样的.
+sort -n 是按照第一列的数值大小进行排序.从小到大,倒序就是 sort -rn

@@ -1,4 +1,4 @@
-nexus私服 ip：10.0.59.21
+nexus私服 ip:10.0.59.21
 ######
 admin
 adminnexus21
@@ -7,7 +7,7 @@ adminnexus21
 #网页访问路径
 http://10.0.59.21:8081/nexus/content/repositories/thirdparty/
 
-nexus私服上传jar包：（第三方）
+nexus私服上传jar包:（第三方）
 #在服务器上的路径
 #groupId/artifactId/version/
 /app/sonatype-work/nexus/storage/thirdparty/cn/abchinalife/dtx/dtx-client/1.7
@@ -18,26 +18,26 @@ dtx-client-1.7.jar  dtx-client-1.7.pom
 	Release 同一个版本号只有一个
 	snapshot 同一个版本号可有多个
 
-3rd  party的服务器路径：
+3rd  party的服务器路径:
 			/app/sonatype-work/nexus/storage/thirdparty  
 
 ****************************************
 	上传出错的原因可能是pom文件没有改名称
 	上传的pom文件要改名成为与jar包名称一致
 ****************************************
-传jar包的两种方式：
+传jar包的两种方式:
 一、configuration中有地址
 #不同类型的包上传位置不同
-	中科软的包： ICS-Release
-	JDBC第三方：3ty
-	外网 可以下载的包：central
+	中科软的包: ICS-Release
+	JDBC第三方:3ty
+	外网 可以下载的包:central
 	
-二、xshell中通过xftp上传到的位置： 
-		(创建多级目录：与com同级--groupId/artifactId/version/)
-例如：
+二、xshell中通过xftp上传到的位置:
+		(创建多级目录:与com同级--groupId/artifactId/version/)
+例如:
 		<groupId>cn.abchinalife.dtx</groupId>
 		<artifactId>dtx-client</artifactId>
 		<version>1.7</version>
-	上传位置：
+	上传位置:
 		/app/sonatype-work/nexus/storage/thirdparty/cn/abchinalife/dtx/dtx-client/1.7
 		dtx-client-1.7.jar  dtx-client-1.7.pom

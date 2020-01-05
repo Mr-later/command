@@ -17,12 +17,12 @@ redis的搭建说明
 
 二.redis集群安装
 tar包解压
-cd 到解压后的文件夹，源码编译make
+cd 到解压后的文件夹,源码编译make
 redis make时 出现 cc 命令未找到,需要安装c++ yum install gcc
 
 
 三.redis的配置和启动
-启动顺序：
+启动顺序:
 先哨兵sentinel再启动redis
 
 1.启动命令
@@ -58,7 +58,7 @@ protected-mode no
 3.2从的redis.conf文件内容加上如下内容
 slaveof 10.0.40.110 6379
 
-#说明：slaveof 主ip  主redis端口
+#说明:slaveof 主ip  主redis端口
 
 
 
@@ -74,7 +74,7 @@ maxclients 4064
 sentinel down-after-milliseconds agency-redis 5000
 
 
-#说明sentinel.conf的内容： 集群名称 主节点ip 主节点port
+#说明sentinel.conf的内容: 集群名称 主节点ip 主节点port
 #sentinel monitor agency-redis 10.0.40.110 6379 1
 
 

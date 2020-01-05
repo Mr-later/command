@@ -17,5 +17,5 @@ Exception in thread "main" java.lang.UnsupportedClassVersionError: FrontApplicat
 
 
 
-原因：
-出现java.lang.UnsupportedClassVersionError 错误的原因，是因为我们使用高版本的JDK编译的Java class文件试图在较低版本的JVM上运行，所报的错误.
+原因:
+出现java.lang.UnsupportedClassVersionError 错误的原因,是因为我们使用高版本的JDK编译的Java class文件试图在较低版本的JVM上运行,所报的错误.

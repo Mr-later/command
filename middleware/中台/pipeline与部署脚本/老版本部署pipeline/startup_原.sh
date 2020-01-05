@@ -42,14 +42,14 @@ if [ "$pid" != "" ]
 					sleep 1s
 				fi
 			else
-				echo "已结束。"
+				echo "已结束."
 				break;
 			fi
 			let "count--"
 		done
     else
-        echo -e '\033[35m未运行。\033[0m'
+        echo -e '\033[35m未运行.\033[0m'
     fi
 echo -e "\033[35mnohup java ${tomcat} -jar ${url}/${jar} --spring.config.location=file:${url}/$yml --spring.profiles.active=$active >/dev/null 2>&1 &\033[0m"
 nohup java ${tomcat} -jar ${url}/${jar} --spring.config.location=file:${url}/$yml --spring.profiles.active=$active >/dev/null 2>&1 &
-echo "脚本执行完成。。。"
+echo "脚本执行完成..."

@@ -1,4 +1,4 @@
-解锁表：
+解锁表:
 查询使用dba用户执行(并非sysdba)
 select object_name,machine,s.sid,s.serial#
 from v$locked_object l,dba_objects o ,v$session s
@@ -12,7 +12,7 @@ SELECT sid, serial#, username, osuser FROM v$session;
 alter system kill session'352,45577';
 
 
-解释：
+解释:
 --查看哪个表被锁
 select b.owner,b.object_name,a.session_id,a.locked_mode from v$locked_object a,dba_objects b where b.object_id = a.object_id;
 --查看是哪个session引起的
@@ -23,11 +23,11 @@ alter system kill session'352,45577';
 
 
 
-解锁用户：
-1、通常我们遇到oracle用户密码输入多次错误，那么改用户就会变锁定，那么解决方法很简单，如下：
-使用plsql工具sys用户登录（亦可dos命令输入：sqlplus / as sysdba ） 解锁
+解锁用户:
+1、通常我们遇到oracle用户密码输入多次错误,那么改用户就会变锁定,那么解决方法很简单,如下:
+使用plsql工具sys用户登录（亦可dos命令输入:sqlplus / as sysdba ） 解锁
 ALTER USER 用户名 ACCOUNT UNLOCK;
-2、那么遇到这种用户会被锁的情况，我们可以设置用户密码无限次尝试登录，而该用户不会被锁定：
+2、那么遇到这种用户会被锁的情况,我们可以设置用户密码无限次尝试登录,而该用户不会被锁定:
 ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS UNLIMITED;
-3、另外，做项目运维的小伙伴经常遇到数据库用户密码过期的情况，要定期去修改密码很麻烦，那么我们可以设置用户密码不过期：
+3、另外,做项目运维的小伙伴经常遇到数据库用户密码过期的情况,要定期去修改密码很麻烦,那么我们可以设置用户密码不过期:
 ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;

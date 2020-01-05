@@ -30,11 +30,11 @@ function lookupSingleIp(){
     [[ -z $ip ]] && continue;
     panduan=`nslookup $ip | egrep 'name.*='`
     if [ ! -z $panduan ]; then
-        domain=`nslookup $ip | egrep 'name.*=' |  awk '{if(NR==1) print $NF}'`  #查询cname地址，如果只需查询IP地址可屏蔽这一句，使用下面的方法
+        domain=`nslookup $ip | egrep 'name.*=' |  awk '{if(NR==1) print $NF}'`  #查询cname地址,如果只需查询IP地址可屏蔽这一句,使用下面的方法
     else
         domain=`nslookup $ip  | egrep 'Address:' |  awk '{if(NR==2) print $NF}'` #查询IP地址
     fi
-    echo  "$ip	$domain"   #如果想把输出结果输出到文件中，可追加重定向到文件中.
+    echo  "$ip	$domain"   #如果想把输出结果输出到文件中,可追加重定向到文件中.
   done
 }
 
@@ -72,7 +72,7 @@ with open(DOMAIN,'r') as f:
                 ERR.write(line.strip()+ '\n')
         else:
             with open('result.txt','a+') as r: #result.txt里面存储的是批量解析后的结果
-                r.write(line.strip('\n') + ' ')   #显示有ip绑定的域名，用空格隔开
+                r.write(line.strip('\n') + ' ')   #显示有ip绑定的域名,用空格隔开
                 r.write(host + '\n')
 
 

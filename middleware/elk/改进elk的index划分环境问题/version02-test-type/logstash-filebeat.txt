@@ -1,4 +1,4 @@
-filebeat里添加document_type配置，定义一个识别号- input_type: log
+filebeat里添加document_type配置,定义一个识别号- input_type: log
 
   # Paths that should be crawled and fetched. Glob based paths.
   paths:

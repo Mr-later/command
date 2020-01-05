@@ -1,6 +1,6 @@
 jenkins-api创建和删除job.
 
-一：创建job
+一:创建job
 curl -XPOST -u admin:admintest http://[IP]:[PORT]/createItem?name=${i} --data-binary "@/app/jenkins/jobs/[job_name]/config.xml" -H "Content-Type: text/xml"
 
 二、删除job
@@ -10,36 +10,36 @@ curl -XPOST -u admin:15245772130 http://[IP]:[PORT]/job/[job_name]/doDelete
 
 创建job
 最近在做jenkins的拆分迁移项目
-条件：
-1.jenkins中的插件已经下载好，jdk和maven已经配置好，ssh的ip已经配置好.
-2.将job迁移，只需要job必须的config.xml即可.
-方法一：
-直接拷贝jenkins目录下的job文件夹，
-臃肿，不建议
-方法二：
+条件:
+1.jenkins中的插件已经下载好,jdk和maven已经配置好,ssh的ip已经配置好.
+2.将job迁移,只需要job必须的config.xml即可.
+方法一:
+直接拷贝jenkins目录下的job文件夹,
+臃肿,不建议
+方法二:
 （1）创建job文件夹
 （2）将对应的job文件夹下config.xml传到目标jenkins对应job文件夹下
 （3）jenkins界面中读取设置 .
-方法三：
+方法三:
 使用jenkins创建job的api使用.
 
 
 
-注意：
+注意:
 1.jenkins默认开启CSRF(防止跨站点请求).
-方式一：在安全设置中直接关闭此功能
-方式二：获取crumb信息
+方式一:在安全设置中直接关闭此功能
+方式二:获取crumb信息
 curl -u root:liumiaocn 'http://localhost:32002/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)
 
-注意从不同主机执行此命令获取到的crumb结果不同，使用crumb创建job：
+注意从不同主机执行此命令获取到的crumb结果不同,使用crumb创建job:
 
 curl -X POST -u 目标jenkins的用户名:目标jenkins密码 -H "Content-Type:text/xml"    -H "Jenkins-Crumb:5955de6dcdcdb990b7341ead1045eb64"   --data-binary "@var/lib/jenkins/jobs/参考job名称/config.xml" http://目标jenkins的IP:目标jenkins的端口/createItem?name=新job名称
 
 
-关于curl：
---data-binary：必须的，不能仅仅使用-d，经过实验，-d会导致pipeline成为一行
--u： 用户名：密码
--X：请求方式（GET,POST）
+关于curl:
+--data-binary:必须的,不能仅仅使用-d,经过实验,-d会导致pipeline成为一行
+-u: 用户名:密码
+-X:请求方式（GET,POST）
 
 
 
