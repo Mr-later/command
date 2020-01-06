@@ -40,6 +40,7 @@ Version2:
 优化脚本如下 加入判断语句
 #1. 如果存在日志文件路径,再创建备份文件路径
 #2.如果在日志文件路径下 不存在要备份的当天的数据,不执行备份命令,输出不存在信息到tar.log,因为没有当天日志文件不加判断也会生成打包日志文件,只是包里内容为空,此时直接不打包
+脚本内容如下:
 #!/bin/bash
 logpath=/app/icsapp/local/log/
 bak_path=/app/icsapp/local/bak_log
@@ -61,7 +62,8 @@ else
   echo  "no ${logpath} exist"  >> ~/tar.log
 fi
 
-优化前后对比
+
+优化前(version1)后(version2)对比:
 version1:不加判断,没有日志文件路径,不会创建备份文件路径；且 没有当天日志,也会打当天的包
 version2:加入判断之后,没有日志文件路径,则不会创建备份文件路径；没有当天日志,也不会打当天的包
 
